@@ -5,8 +5,12 @@ var mongoose = require('mongoose'),
 
 var StudyareaSchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean
+  lat: String,
+  lng: String,
+  default_zoom: Number,
+  timestamp: Date,
+  default_audit_type: {type: Schema.ObjectId, ref:'AuditType'},
+  is_public: Boolean
 });
 
 module.exports = mongoose.model('Studyarea', StudyareaSchema);

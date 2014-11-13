@@ -9,13 +9,16 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/users', require('./api/user'));
+  app.use('/api/audit_types', require('./api/audit_type'));
+  app.use('/api/responses', require('./api/response'));
   app.use('/api/questions', require('./api/question'));
   app.use('/api/placemarkers', require('./api/placemarker'));
   app.use('/api/participants', require('./api/participant'));
-  app.use('/api/audit_types', require('./api/audit_type'));
+  
   app.use('/api/studyareas', require('./api/studyarea'));
   app.use('/api/things', require('./api/thing'));
-  app.use('/api/users', require('./api/user'));
+ 
 
   app.use('/auth', require('./auth'));
   

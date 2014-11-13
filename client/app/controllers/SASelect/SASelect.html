@@ -1,3 +1,31 @@
-<div class="col-md-12">
-This is the SASelect view.
+<div id="sa_select">
+
+	<div  id='sa_search_row'>
+		<div class="container">
+			<div class="col-md-6">
+				<h3>S T U D Y &nbsp;&nbsp; A R E A S</h3>
+			</div>
+			<div class="col-md-6">
+				<input type="text" class="form-control" ng-model="saSearch" placeholder="Search for a Study Area" /> 
+			</div>
+		</div>
+		
+	</div>
+
+	<div id="sa_tile_row">
+
+		<div class="container">
+
+			
+				<div class="col-md-4" ng-repeat="sa in studyareas | filter: saSearch">
+					<div class="sa_tile" ng-click="tileClick(sa.id)">
+						<p class="sa_title">{{ sa.name }}</p>
+						<p class="sa_mrkcount">Responses: {{ sa.placemarkers.length }}</a></p>
+						<img src="res/images/marker_icon_sa.png" />
+					</div>
+				</div>
+			
+
+		</div>
+	</div>
 </div>

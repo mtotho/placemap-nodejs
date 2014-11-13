@@ -5,8 +5,8 @@ var mongoose = require('mongoose'),
 
 var AuditTypeSchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean
+  description: String,
+  creator:{type: Schema.ObjectId, ref:'User'}
 });
 
 module.exports = mongoose.model('AuditType', AuditTypeSchema);
