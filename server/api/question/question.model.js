@@ -4,9 +4,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var QuestionSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+  question_text: String,
+  question_type: {type: Schema.ObjectId, ref:'QuestionType'},
+  is_deleted: Boolean
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);
