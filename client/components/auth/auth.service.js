@@ -37,7 +37,7 @@ angular.module('placemapApp')
           deferred.reject(err);
           return cb(err);
         }.bind(this));
-
+   
         return deferred.promise;
       },
 
@@ -109,7 +109,7 @@ angular.module('placemapApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-      
+
         return currentUser.hasOwnProperty('role');
       },
 

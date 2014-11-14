@@ -2,6 +2,7 @@
 
 angular.module('placemapApp').controller('LoginCtrl', function ($scope, Auth, $location) {
 
+	$scope.errors= new Object();
 
     $scope.login = function(form) {
       $scope.submitted = true;
@@ -13,12 +14,13 @@ angular.module('placemapApp').controller('LoginCtrl', function ($scope, Auth, $l
           email: $scope.user.email,
           password: $scope.user.password
         })
-        .then( function(result) {
-  
+        .then( function() {
+
           // Logged in, redirect to home
           $location.path('/');
         })
         .catch( function(err) {
+   
           $scope.errors.other = err.message;
         });
       }
