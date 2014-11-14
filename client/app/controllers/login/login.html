@@ -2,19 +2,19 @@
 
 	<div class="col-md-4"></div>
 	  <div class="col-md-4">
-	  	<form style="margin:5em 0 5em 0;" role="form">
+	  	<form style="margin:5em 0 5em 0;" role="form" name="form" ng-submit="login(form)">
 
 	  		<div class="form-group">
 				<label for="txtEmail">Email </label>
-				<input id="txtEmail" class="form-control" data-ng-model="email" type="email" placeholder="Enter email">
+				<input id="txtEmail" class="form-control" data-ng-model="user.email" type="email" placeholder="Enter email" required>
 			 </div>
 
 			<div class="form-group">
 				<label for="txtPassword">Password </label>
-				<input id="txtPassword" class="form-control" data-ng-model="password" type="password" placeholder="Password">
+				<input id="txtPassword" class="form-control" data-ng-model="user.password" type="password" placeholder="Password" required>
 			</div>
 			
-			<button type="button" class="btn btn-primary" data-ng-click="btnLogin_click()">Login</button>
+			<button type="submit" class="btn btn-primary">Login</button>
 			
 		</form>
 

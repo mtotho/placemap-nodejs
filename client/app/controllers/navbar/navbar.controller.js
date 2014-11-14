@@ -1,10 +1,19 @@
 'use strict';
 
-angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $location) {
+angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $location, Auth) {
     
 
+	
+
+	
+
 	$scope.$on('$stateChangeSuccess', function () {
-			
+		 Auth.isLoggedInAsync(function(isLoggedIn){
+		 	
+		 	$scope.isLoggedIn=isLoggedIn;
+
+		 });
+
 				/*
 			if(auth.isLoggedIn()){
 				$scope.user=auth.getUser();
@@ -50,6 +59,13 @@ angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $locati
 			console.log(path);
 
 		});
+
+		$scope.logout = function(){
+			Auth.logout();
+		//	$scope.isLoggedIn=false;
+			$location.path('/');
+
+		}
 
 
   });

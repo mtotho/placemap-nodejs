@@ -4,7 +4,9 @@ angular.module('placemapApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
     if($cookieStore.get('token')) {
+
       currentUser = User.get();
+
     }
 
     return {
@@ -107,6 +109,7 @@ angular.module('placemapApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
+      
         return currentUser.hasOwnProperty('role');
       },
 
