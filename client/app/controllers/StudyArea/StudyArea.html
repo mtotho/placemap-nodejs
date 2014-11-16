@@ -1,3 +1,132 @@
-<div class="col-md-12">
-This is the StudyArea view.
+
+<div id="info_area" class="container-fluid">
+	
+	<div class="col-md-6">
+		<p class="sa_label">STUDY AREA </p><span class="glyphicon glyphicon-chevron-right"></span><p class="sa_title"> {{ studyarea.name }}</p>
+	</div>
+		
+	<div class="clearfix"></div>
 </div>
+<div id="page_studyarea" class="map_outter_div">
+	<!--<div class="col-md-9 col-left"> -->
+	<!--	<div id="ui_handle"></div>-->
+
+		<div id="map_canvas" class="map_div" ></div>
+	   
+	
+			
+		
+		<div ng-show="responseShown" class="response_panel_opacity map_panel"></div>
+		<div class="response_panel map_panel panel-collapse collapse">
+
+			<h3>Response</h3>
+
+			<div id="response_content">
+				<div ng-repeat="r in response_marker.response">
+					
+					
+					<div class="question_response" ng-hide="r.question_type!='check'">
+						<p class='question_text'>{{ studyarea.question_set.questions[$index].question_text }}</p>
+						<div class="row">
+							<div class="col-md-6" ng-repeat="(key,value) in r.response_json">
+								<p class='response_text'>{{ key }}</p>
+							</div>
+
+						</div>
+
+					</div>
+
+					<div class="question_response" ng-hide="r.question_type!='shortanswer'">
+						<p class='question_text'>{{ studyarea.question_set.questions[$index].question_text }}</p>
+						<p class='response_text'>{{ r.response_text }}</p>
+
+					</div>
+					
+				</div>
+
+			<!--
+			<p>Other Stats</p>
+			Lat: {{ response_marker.lat }} <br />
+			lng: {{ response_marker.lng }}-->
+			</div>
+
+		</div>
+
+		<!--
+		<div class="markers_remain_panel map_panel">
+			<img src="res/images/marker_icon/icon_grey.png" />
+			<p> x{{ 15 - participant.markers_placed }}</p>
+		</div>-->
+
+	    <div ng-show="ratingModeEnabled" id="rating_panel" class="map_panel rating_panel">
+	    	<h3>Select a Rating</h3>
+
+	    	<div class="row">
+	    		<div class="col-md-4">
+	    			<div class="rdoRate radio">
+		    			<label>
+
+		    				<img src="assets/images/marker_icon/icon_red.png" />
+		    				<input ng-change='rdoColorChange(markerType)' type="radio" name="markerType" ng-model="markerType" id="optionsRadios1" value="red">
+		    			</label>
+
+		    			<p>Detracts from community</p>
+		    		</div>
+		    	</div>
+
+
+		    	<div class="col-md-4">
+	    			<div class="rdoRate radio">
+		    			<label>
+		    				<img src="assets/images/marker_icon/icon_yellow.png" />
+		    				<input ng-change='rdoColorChange(markerType)' type="radio" name="markerType" ng-model="markerType" id="optionsRadios2" value="yellow">
+		    			</label>
+		    			<p>Important opportunity that needs work</p>
+		    		</div>
+		    	</div>
+		    	<div class="col-md-4">
+		    		<div class="rdoRate radio">
+		    			<label>
+		    				<img src="assets/images/marker_icon/icon_green.png" />
+		    				<input ng-change='rdoColorChange(markerType)' type="radio" name="markerType" ng-model="markerType" id="optionsRadios3" value="green">
+    					</label>
+    					<p>A cool place that adds value</p>
+		    		</div>
+		    	</div>
+	    	</div>
+	    	
+
+	    	<button id="btnSelectMarkerLocation" type="button" data-ng-click="btnSetRating()"  class="btn">Rate Location</button>
+	    	<!--<button type="button" data-ng-click="btnDebug()"  class="btn">(debug)</button>-->
+	    
+
+	    
+	    		
+			
+		</div><!--end map panel-->
+		<div ng-show="!ratingModeEnabled" id="placemarker_prompt" class="map_panel">
+			<button type="button" data-ng-click="setRatingMode(true)"  class="btn btn-primary">Place a Marker</button>
+		</div>
+		
+		<div id="draggableTooltip" class="map_panel" data-toggle="tooltip" title="Drag marker to desired location"></div>
+
+		<ng-questions-view sa="studyarea" qvopen="qvopen" mmarker="marker"></ng-questions-view>
+	    
+	
+	<!--</div>-->
+	<!--<div class="col-md-3 col-right">
+
+		
+		<div class="ui_panel">
+
+
+
+		</div>
+
+	</div>-->
+
+
+
+</div>
+<!--<button id="btnDebug" type="button" class="btn btn-default">Debug</button>-->
+

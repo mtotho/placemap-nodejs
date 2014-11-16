@@ -86,9 +86,7 @@ ol.example li.placeholder:before {
     padding-right:0px;
     background-color:white;
 }
-#content{
-    height:100%;
-}
+
 .view_content{
     margin:2em 1em 3em 1em;
 
@@ -177,12 +175,13 @@ header .nav li.lnkLogout>a{
 
 .map_outter_div{
     height:100%;
+    position:relative;
  
 }
 .map_div{
     width:100%;
     height:100%;
-    position:relative;
+  
 }
 
 .map_panel{

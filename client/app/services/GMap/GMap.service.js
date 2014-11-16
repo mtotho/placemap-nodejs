@@ -231,7 +231,7 @@ angular.module('placemapApp')
 		this.setStudyArea = function(studyarea){
 			this.studyarea=studyarea;
 			this.mapOptions.center = new google.maps.LatLng(studyarea.lat, studyarea.lng);
-			this.mapOptions.zoom = parseInt(studyarea.zoom);
+			this.mapOptions.zoom = studyarea.default_zoom;
 		}
 		this.getMap = function(){
 			return this.map;
