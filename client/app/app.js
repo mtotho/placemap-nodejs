@@ -8,7 +8,7 @@ angular.module('placemapApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/');
+     .otherwise('/');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -38,15 +38,42 @@ angular.module('placemapApp', [
         }
       }
     };
-  })
+  }).run(function ($rootScope, $state, Auth) {
+    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+         Auth.isLoggedInAsync(function(loggedIn) {
+            if (toState.data.authenticate && !loggedIn) {
+               $state.transitionTo("login");
 
-  .run(function ($rootScope, $location, Auth) {
-    // Redirect to login if route requires auth and you're not logged in
-    $rootScope.$on('$stateChangeStart', function (event, next) {
-      Auth.isLoggedInAsync(function(loggedIn) {
-        if (next.authenticate && !loggedIn) {
-          $location.path('/login');
-        }
-      });
+                event.preventDefault();
+            }
+          });
+
+
+
+        
     });
   });
+
+$(document).ready(function(){
+  window.debug = true;
+
+
+});
+
+
+function autosize(){
+  var headerheight=$("header").outerHeight();
+  var info_height=$("#info_area").outerHeight();
+  var windowheight=$(window).outerHeight();
+
+  var targetheight = windowheight - (headerheight + info_height);
+
+
+  var namewidth = $(".name_panel h3").width();
+  //console.log(namewidth);
+
+  //$(".name_panel").width(namewidth);
+
+
+  $("#map_canvas").height(targetheight);
+}

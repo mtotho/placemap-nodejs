@@ -6,6 +6,9 @@ angular.module('placemapApp')
       .state('login', {
         url: '/login',
         templateUrl: 'app/controllers/login/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        data:{
+          authenticate:false
+       	}
       });
   });

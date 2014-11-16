@@ -8,11 +8,11 @@ angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $locati
 	
 
 	$scope.$on('$stateChangeSuccess', function () {
-		 Auth.isLoggedInAsync(function(isLoggedIn){
+		
 		 	
-		 	$scope.isLoggedIn=isLoggedIn;
+		 	$scope.isLoggedIn=Auth.isLoggedIn();
 
-		 });
+	
 
 				/*
 			if(auth.isLoggedIn()){

@@ -37,7 +37,7 @@
 
     <!-- Add your site or application content here -->
 
-    <div class="container-fluid">
+    <div id="container" class="container-fluid">
 
       <header >
         <div class="col-md-6">
@@ -63,7 +63,7 @@
       </header>
           
 
-      <div ui-view=""></div>
+      <div id="content" ui-view=""></div>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -92,7 +92,8 @@
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
-
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyAHDR09KWWgVoyFCoavaoHm2cCAHX5VL2g&sensor=false&libraries=places,visualization">
+          </script>
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
@@ -104,12 +105,14 @@
           <script src="app/controllers/admin/admin.js"></script>
           <script src="app/controllers/admin/admin.questions.controller.js"></script>
           <script src="app/controllers/admin/admin.studyareas.controller.js"></script>
+          <script src="app/controllers/admin/admin.studyareas.create.controller.js"></script>
           <script src="app/controllers/admin/admin.users.controller.js"></script>
           <script src="app/controllers/home/home.controller.js"></script>
           <script src="app/controllers/home/home.js"></script>
           <script src="app/controllers/login/login.controller.js"></script>
           <script src="app/controllers/login/login.js"></script>
           <script src="app/controllers/navbar/navbar.controller.js"></script>
+          <script src="app/services/GMap/GMap.service.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>

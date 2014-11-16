@@ -1,13 +1,24 @@
 'use strict';
 
 angular.module('placemapApp')
-  .config(function ($stateProvider) {
+  .config(function ($stateProvider, $urlRouterProvider) {
+
+  
+
     $stateProvider
       .state('admin', {
         url: '/admin',
 		templateUrl: 'app/controllers/admin/admin.html',
-	  	controller: 'AdminCtrl'
+	  	controller: 'AdminCtrl',
+       data:{
+          authenticate:true
+       }
       
+      }).state('admin.sa_create',{
+        url:'/studyareas/create',
+        templateUrl: 'app/controllers/admin/admin.studyareas.create.html',
+        controller:'AdminSACreateCtrl'
+
       }).state('admin.studyareas',{
       	url:'/studyareas',
       	templateUrl: 'app/controllers/admin/admin.studyareas.html',

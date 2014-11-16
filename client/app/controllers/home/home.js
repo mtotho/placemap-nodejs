@@ -6,6 +6,9 @@ angular.module('placemapApp')
       .state('home', {
         url: '/',
         templateUrl: 'app/controllers/home/home.html',
-        controller: 'HomeCtrl'
+        controller: 'HomeCtrl',
+        data:{
+          authenticate:false
+       	}
       });
   });

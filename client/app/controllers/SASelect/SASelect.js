@@ -6,6 +6,9 @@ angular.module('placemapApp')
       .state('SASelect', {
         url: '/studyarea',
         templateUrl: 'app/controllers/SASelect/SASelect.html',
-        controller: 'SaselectCtrl'
+        controller: 'SaselectCtrl',
+        data:{
+          authenticate:false
+       	}
       });
   });
