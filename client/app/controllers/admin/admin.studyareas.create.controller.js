@@ -1,12 +1,23 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminSACreateCtrl', function ($scope, GMap, $resource) {
-    
+  .controller('AdminSACreateCtrl', function ($scope, GMap, $state, $resource) {
+    	
+  		var StudyArea = $resource('/api/studyareas');
+  		var AuditType = $resource('/api/audit_types');
+
   		function init(){
   			GMap.init("map_canvas");
   			map_resize();
   			GMap.checkResize();
+
+  			$scope.chkListPublic=false;
+
+  			AuditType.query(function(result){
+  				$scope.question_sets=result;
+  			});
+
+
   		}
   		init();
 
@@ -29,15 +40,30 @@ angular.module('placemapApp')
 
 	 	});
 
-		$scope.btnCreateStudyArea = function(){
+		$scope.createStudyArea = function(form){
 
-			var study_area={
-				name:$scope.StudyAreaName,
-				zoom:GMap.getZoom(),
-				lat:GMap.getCenter().lat(),
-				lng:GMap.getCenter().lng()
-			}
 
+	      if(form.$valid) {
+
+			var date = new Date;
+			var unixtime=parseInt(date.getTime()/1000);
+			var unixtime_to_date = new Date(unixtime*1000);
+			
+			var sa = new StudyArea();
+			sa.name=$scope.StudyAreaName;
+			sa.default_zoom=GMap.getZoom();
+			sa.lat=""+GMap.getCenter().lat();
+			sa.lng=""+GMap.getCenter().lng();
+			//sa.timestamp = unixtime_to_date
+			sa.is_public = $scope.chkListPublic;
+			sa.default_audit_type=$scope.selQS._id;
+			console.log(sa);
+			sa.$save(function(result){
+      			$state.transitionTo("admin.studyareas");
+      		});
+
+	      }
+	
 
 		}
 

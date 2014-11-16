@@ -1,21 +1,32 @@
 
-	<div class="panel panel-primary">
+	<div id="qsSelectPanel" class="panel panel-primary">
 	   	<div class="panel-heading">
 	    	<h3 class="panel-title">Question Sets</h3>
 	  	</div>
 
 	  	<div class="panel-body">
-	  		<label>Select Question Set <br />
-				<select ng-model="selQS" class="form-control" ng-options="qs.name for qs in question_sets">
-											
-				</select>
-			</label>
 
-			<label style="margin-left:6em">New Set<br />
-				<input  ng-model="newQS" class="form-control" type="text" />
-			</label>
-			<button type="button" ng-click="btnNewQuestionSet()"class="btn btn-success">New Set</button>
+	  		<div class="col-md-3">
+		  		
+				<label>Select Question Set <br />
+					<select name="question_set" ng-model="selQS" class="form-control" ng-options="qs.name for qs in question_sets">
+						<option value="">Please Select</option> 				
+					</select>
+				</label>
+			</div>	
 
+
+			<div class="col-md-9 right">
+				<form  role="form"  name="form" ng-submit="createQuestionSet(form)">
+
+					<label>New Question Set Name <br />
+						<input id="txtSaName" class="form-control" data-ng-model="newQS" type="text"  required>
+					</label>
+
+					<button type="submit" class="btn btn-success">New Set</button>
+			
+				</form>
+			</div>
 		</div>
 	</div><!--end panel primary-->
 			

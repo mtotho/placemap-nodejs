@@ -8,7 +8,7 @@ var StudyareaSchema = new Schema({
   lat: String,
   lng: String,
   default_zoom: Number,
-  timestamp: Date,
+  timestamp: { type: Date, default: Date.now },
   default_audit_type: {type: Schema.ObjectId, ref:'AuditType'},
   responses:[{type: Schema.ObjectId, ref:'AuditType'}],
   is_public: Boolean

@@ -8,22 +8,35 @@
   
     <div class="map_panel map_create">
     	
-    	<p>Create New</p>
+    	<h3>Create New</h3> <br />
 
-		<form  role="form">
+		<form  role="form"  name="form" ng-submit="createStudyArea(form)">
 
 			<div class="form-group">
 				<label for="txtSaName">Study Area Name</label>
-				<input id="txtSaName" class="form-control" data-ng-model="StudyAreaName" type="text" placeholder="Enter Study Area">
+				<input id="txtSaName" class="form-control" data-ng-model="StudyAreaName" type="text" placeholder="Enter Study Area" required>
 			 </div>
 
 			<div class="form-group">
-				<label>Zoom Level </label>
-				{{ mapzoom }}
+				<label>Zoom Level: </label>
+				<span id="mapzoom">{{ mapzoom }}</span>
 
 			</div>
+
+			<label>Select Question Set to use 
+				<select name="question_set" ng-model="selQS" class="form-control" ng-options="qs.name for qs in question_sets" required>
+							<option value="">Please Select</option> 					
+				</select>
+			</label>
+
+			<div class="checkbox">
+			    <label>
+			      <input ng-model="chkListPublic" type="checkbox"> List Publicly
+			    </label>
+		  	</div>
 			
-			<input type="button" value="Create" data-ng-click="btnCreateStudyArea()" />
+			<button type="submit" class="btn btn-primary">Create</button>
+		
 		</form>
 
 	</div>

@@ -2,13 +2,13 @@
 
 var _ = require('lodash');
 var Studyarea = require('./studyarea.model');
-
+var AuditType = require('../audit_type/audit_type.model');
 // Get list of studyareas
 exports.index = function(req, res) {
   Studyarea.find(function (err, studyareas) {
     if(err) { return handleError(res, err); }
     return res.json(200, studyareas);
-  });
+  }).populate('default_audit_type').exec();
 };
 
 // Get a single studyarea
@@ -22,7 +22,9 @@ exports.show = function(req, res) {
 
 // Creates a new studyarea in the DB.
 exports.create = function(req, res) {
+
   Studyarea.create(req.body, function(err, studyarea) {
+    console.log(err);
     if(err) { return handleError(res, err); }
     return res.json(201, studyarea);
   });

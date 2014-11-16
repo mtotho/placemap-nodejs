@@ -17,7 +17,7 @@ angular.module('placemapApp').controller('LoginCtrl', function ($scope, Auth, $l
         .then( function() {
 
           // Logged in, redirect to home
-          $location.path('/');
+          $location.path('/admin');
         })
         .catch( function(err) {
    

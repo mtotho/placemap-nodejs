@@ -421,7 +421,27 @@ table th{
 #admin_content{
 
 }
+#sa_create form label{
+    font-weight:normal;
+    font-style:italic;
+}
+#mapzoom{
+    font-weight:bold;
+}
+#qsSelectPanel div.panel-body div.right {
+  
+}
+#qsSelectPanel div.panel-body form{
 
+    width:40em;
+}
+#qsSelectPanel div.panel-body form input{
+    width:100%;
+    display:inline;
+}
+#qsSelectPanel div.panel-body form button{
+    display:inline;
+}
 #question_list li{
 
 
