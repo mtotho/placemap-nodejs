@@ -28,25 +28,25 @@ angular.module('placemapApp')
 				//"red": "res/images/marker_icon/icon_red.png", //"http://maps.google.com/mapfiles/ms/icons/red-dot.png",
 				//"yellow":"res/images/marker_icon/icon_yellow.png", //"http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
 				//"green":"res/images/marker_icon/icon_green.png",//"http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-				"grey":"res/images/marker_icon/icon_grey.png",
-				"light-red": "res/images/marker_icon/icon_red_light.png", 
-				"light-yellow":"res/images/marker_icon/icon_yellow_light.png", 
-				"light-green":"res/images/marker_icon/icon_green_light.png",
-				"red-delete": "res/images/marker_icon/icon_red_delete.png", 
-				"yellow-delete":"res/images/marker_icon/icon_yellow_delete.png", 
-				"green-delete":"res/images/marker_icon/icon_green_delete.png",
-				"red": "res/images/clustering/redCircle-25.png", //"http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-				"yellow":"res/images/clustering/yellowCircle-25.png", //"http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
-				"green":"res/images/clustering/greenCircle-25.png",//"ht
-				"red-select": "res/images/clustering/redCircle-selected-25.png", //"http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-				"yellow-select":"res/images/clustering/yellowCircle-selected-25.png", //"http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
-				"green-select":"res/images/clustering/greenCircle-selected-25.png",//"ht
+				"grey":"assets/images/marker_icon/icon_grey.png",
+				"light-red": "assets/images/marker_icon/icon_red_light.png", 
+				"light-yellow":"assets/images/marker_icon/icon_yellow_light.png", 
+				"light-green":"assets/images/marker_icon/icon_green_light.png",
+				"red-delete": "assets/images/marker_icon/icon_red_delete.png", 
+				"yellow-delete":"assets/images/marker_icon/icon_yellow_delete.png", 
+				"green-delete":"assets/images/marker_icon/icon_green_delete.png",
+				"red": "assets/images/clustering/redCircle-25.png", //"http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+				"yellow":"assets/images/clustering/yellowCircle-25.png", //"http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+				"green":"assets/images/clustering/greenCircle-25.png",//"ht
+				"red-select": "assets/images/clustering/redCircle-selected-25.png", //"http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+				"yellow-select":"assets/images/clustering/yellowCircle-selected-25.png", //"http://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+				"green-select":"assets/images/clustering/greenCircle-selected-25.png",//"ht
 			}
 	 	 this.styles = 
 	 	 	[
 	 	 		[
 	 	 			{
-				        url: 'res/images/clustering/greyCircle-30.png?v=1',
+				        url: 'assets/images/clustering/greyCircle-30.png?v=1',
 				        height: 30,
 				        width: 30,
 				        anchor: [0, 0],
@@ -54,7 +54,7 @@ angular.module('placemapApp')
 				        textSize: 9
 		     		 }, 
 		      		{
-				        url: 'res/images/clustering/greyCircle-40.png?v=1',
+				        url: 'assets/images/clustering/greyCircle-40.png?v=1',
 				        height: 40,
 				        width: 40,
 				        anchor: [0, 0],
@@ -62,7 +62,7 @@ angular.module('placemapApp')
 				        textSize: 11
 		     		 }, 
 		      		{
-				        url: 'res/images/clustering/greyCircle-55.png',
+				        url: 'assets/images/clustering/greyCircle-55.png',
 				        height: 55,
 				        width: 55,
 				        anchor: [0, 0],
@@ -70,7 +70,7 @@ angular.module('placemapApp')
 				        textSize: 12
 		      		},
 	      			{
-				        url: 'res/images/clustering/greyCircle-65.png?v=1',
+				        url: 'assets/images/clustering/greyCircle-65.png?v=1',
 				        height: 65,
 				        width: 65,
 				        anchor: [0, 0],

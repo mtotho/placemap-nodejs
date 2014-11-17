@@ -5,7 +5,13 @@ var mongoose = require('mongoose'),
 
 var QuestionSchema = new Schema({
   question_text: String,
-  question_type: {type: Schema.ObjectId, ref:'QuestionType'},
+  question_type: String,
+  opts:[
+  	{
+  		option_text: String,
+  		order: Number
+  	}
+  ],
   is_deleted: Boolean
 });
 

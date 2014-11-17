@@ -17,7 +17,7 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!studyarea) { return res.send(404); }
     return res.json(studyarea);
-  });
+  }).populate('default_audit_type').exec();
 };
 
 // Creates a new studyarea in the DB.
