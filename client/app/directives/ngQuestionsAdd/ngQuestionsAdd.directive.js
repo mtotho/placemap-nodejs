@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .directive('ngQuestionsAdd', function () {
+  .directive('ngQuestionsAdd', function (AuditType) {
     return {
       templateUrl: 'app/directives/ngQuestionsAdd/ngQuestionsAdd.html',
       restrict: 'EA',
@@ -22,7 +22,7 @@ angular.module('placemapApp')
             // do something...
         });
       },
-      controller: function($scope, $resource, AuditType){
+      controller: function($scope, $resource){
   	
       	function init(){
       	
@@ -78,7 +78,7 @@ angular.module('placemapApp')
 
     	//Submit question to db
     	$scope.btnSubmit = function(){
-			var AuditType = $resource('/api/audit_types/'+$scope.question_set._id);
+			//var AuditType = $resource('/api/audit_types/'+$scope.question_set._id);
 			var Question = $resource('/api/questions');
 
     		var tempQuestion = $scope.tempQuestion;
@@ -96,12 +96,12 @@ angular.module('placemapApp')
 
     			var newQ = {
 					"order":$scope.question_set.questions.length+1,
-					"question":result._id
+					"question":result
 				};
 
 				$scope.question_set.questions.push(newQ);
 
-				AuditType.$update($scope.question_set, function(result){
+				AuditType.update($scope.question_set, function(result){
 					console.log(result);
 				});
 

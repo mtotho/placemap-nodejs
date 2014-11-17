@@ -8,7 +8,7 @@ exports.index = function(req, res) {
   AuditType.find(function (err, audit_types) {
     if(err) { return handleError(res, err); }
     return res.json(200, audit_types);
-  });
+  }).populate('questions.question').exec();
 };
 
 // Get a single audit_type
@@ -34,7 +34,26 @@ exports.update = function(req, res) {
   AuditType.findById(req.params.id, function (err, audit_type) {
     if (err) { return handleError(res, err); }
     if(!audit_type) { return res.send(404); }
-    var updated = _.merge(audit_type, req.body);
+    
+    audit_type.name=req.body.name;
+    audit_type.questions = new Array();
+
+    for(var q in req.body.questions){
+   // console.log(q);
+      if(req.body.questions[q].question._id != null){
+
+            audit_type.questions.push({
+              order: req.body.questions[q].order,
+              question: req.body.questions[q].question._id
+            });
+      }
+
+    
+    }
+
+   // 
+
+    var updated = audit_type;//_.merge(audit_type, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, audit_type);

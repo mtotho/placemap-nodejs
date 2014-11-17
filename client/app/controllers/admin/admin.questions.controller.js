@@ -12,6 +12,7 @@ angular.module('placemapApp')
 
   			AuditType.query(function(result){
   				$scope.question_sets=result;
+          console.log(result);
   			});
   			
 
