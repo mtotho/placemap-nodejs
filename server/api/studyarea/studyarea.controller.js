@@ -5,10 +5,23 @@ var Studyarea = require('./studyarea.model');
 var AuditType = require('../audit_type/audit_type.model');
 // Get list of studyareas
 exports.index = function(req, res) {
-  Studyarea.find(function (err, studyareas) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, studyareas);
-  }).populate('default_audit_type').exec();
+
+  //is_public not passed, show all
+  if(req.param('is_public')==null){
+      
+       Studyarea.find(function (err, studyareas) {
+        if(err) { return handleError(res, err); }
+        return res.json(200, studyareas);
+      }).populate('default_audit_type').exec();
+
+  //filter by is_public field
+  }else{
+      Studyarea.find({"is_public":req.param('is_public')}, function (err, studyareas) {
+        if(err) { return handleError(res, err); }
+        return res.json(200, studyareas);
+      }).populate('default_audit_type').exec();
+    }
+
 };
 
 // Get a single studyarea

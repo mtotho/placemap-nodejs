@@ -7,7 +7,7 @@ angular.module('placemapApp')
 
   		function init(){
 
-  			StudyArea.query(function(results){
+  			StudyArea.query({"is_public":true},function(results){
   				$scope.studyareas=results;
   				console.log(results);
   			})
