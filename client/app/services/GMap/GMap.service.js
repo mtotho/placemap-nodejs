@@ -223,7 +223,12 @@ angular.module('placemapApp')
 		this.createStudyArea =  function(){
 			this.map.setCenter(this.defaultCenter);
 		}
-
+		this.preSetCenter = function(lat,lng){
+			this.mapOptions.center = new google.maps.LatLng(lat, lng);
+		}
+		this.preSetZoom = function(zoom){
+			this.mapOptions.zoom = zoom
+		}
 		this.getDraggableMarker = function (){
 			return this.draggableMarker;
 		}

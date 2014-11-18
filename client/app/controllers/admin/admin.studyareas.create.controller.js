@@ -1,15 +1,36 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminSACreateCtrl', function ($scope, GMap, $state, $resource) {
+  .controller('AdminSACreateCtrl', function ($scope, GMap, $state, $resource,userStorage) {
     	
   		var StudyArea = $resource('/api/studyareas');
   		var AuditType = $resource('/api/audit_types');
-
+  		
+  		var storage = userStorage.model.admin.studyareas.create;
+  		console.log(userStorage);
   		function init(){
+
+  			if(storage.in_progress){
+  				GMap.preSetCenter(storage.lat, storage.lng);
+  				GMap.preSetZoom(parseInt(storage.zoom));
+  				$scope.mapzoom=storage.zoom;
+  				$scope.StudyAreaName=storage.name;
+  			}
+
   			GMap.init("map_canvas");
   			map_resize();
   			GMap.checkResize();
+
+	    	google.maps.event.addListener(GMap.getMap(), 'idle', function() {
+	    		syncStorage();
+ 	     	});
+
+	    	//Map zoom change
+			google.maps.event.addListener(GMap.getMap(), 'zoom_changed', function() {
+			    syncStorage();
+		    	applyMapZoom(GMap.getZoom());
+
+		 	});
 
   			$scope.chkListPublic=false;
 
@@ -21,6 +42,18 @@ angular.module('placemapApp')
   		}
   		init();
 
+  		function syncStorage(){
+  			storage.in_progress=true;
+  			storage.name=$scope.StudyAreaName;
+  			storage.lat=""+GMap.getCenter().lat();
+			storage.lng=""+GMap.getCenter().lng();
+			storage.zoom=GMap.getZoom();
+  		}
+
+  		$scope.inputUpdated = function(){
+  			storage.in_progress=true;
+  			syncStorage();
+  		}
   		$scope.zoomChange = function(){
 			$scope.map.zoom=parseInt($scope.zoom);
 
@@ -34,11 +67,7 @@ angular.module('placemapApp')
 		
 		}
 
-		//Map zoom change
-		google.maps.event.addListener(GMap.getMap(), 'zoom_changed', function() {
-	    	applyMapZoom(GMap.getZoom());
-
-	 	});
+		
 
 		$scope.createStudyArea = function(form){
 
@@ -59,6 +88,7 @@ angular.module('placemapApp')
 			sa.default_audit_type=$scope.selQS._id;
 			console.log(sa);
 			sa.$save(function(result){
+				storage.in_progress=false;
       			$state.transitionTo("admin.studyareas");
       		});
 

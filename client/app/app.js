@@ -1,5 +1,7 @@
 'use strict';
 
+var is_state_restored = false;
+
 angular.module('placemapApp', [
   'ngCookies',
   'ngResource',
@@ -9,9 +11,13 @@ angular.module('placemapApp', [
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
      .otherwise('/');
-
+    //$cookieStore.put("state_restored","false");
+    
+  // is_state_restored = "derp";
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
@@ -38,20 +44,40 @@ angular.module('placemapApp', [
         }
       }
     };
-  }).run(function ($rootScope, $state, Auth) {
+  }).run(function ($rootScope, $state, Auth, $cookieStore,userStorage) {
+    //console.log(is_state_restored);
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+        
+        
+          //State is not restored
+         if(!is_state_restored){
+             $rootScope.$broadcast('restorestate'); //let everything know we need to restore state
+             is_state_restored=true;
+          //state is already restored, save it
+          }else{
+            $rootScope.$broadcast('savestate');
+          }
+
+
          Auth.isLoggedInAsync(function(loggedIn) {
             if (toState.data.authenticate && !loggedIn) {
                $state.transitionTo("login");
-
-                event.preventDefault();
+               event.preventDefault();
             }
-          });
+          });//end Auth
+         //console.log($cookieStore.get('state_restored'));
+
 
 
 
         
-    });
+    });//end stateChangeStart
+
+    window.onbeforeunload = function (event) {
+        console.log("beforelod");
+        $cookieStore.put("state_restored","false");
+        $rootScope.$broadcast('savestate');
+    };
   });
 
 $(document).ready(function(){
