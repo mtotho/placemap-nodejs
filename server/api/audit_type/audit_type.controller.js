@@ -17,7 +17,7 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!audit_type) { return res.send(404); }
     return res.json(audit_type);
-  });
+  }).populate('questions.question').exec();
 };
 
 // Creates a new audit_type in the DB.

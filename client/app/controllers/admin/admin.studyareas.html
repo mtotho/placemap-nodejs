@@ -17,19 +17,19 @@
 					<th>Link</th>
 				</tr>
 
-				<tr ng-repeat="sa in studyareas | filter: saSearch">
+				<tr ng-repeat="sa in studyareas | filter: saSearch" ng-controller="AdminSAWatchCtrl">
 					<td>{{ sa.id }}</td>
 					<td>{{ sa.name }}</td>
 					<td>{{ sa.placemarkers.length }}</td>
 					<td>
 						
-						<select class="form-control" ng-change="qsChange(sa.id, $index)" ng-model="studyareas[$index].default_audit_type._id"  ng-options="qs._id as qs.name for qs in question_sets">
+						<select class="form-control" ng-change="audit_type_update()" ng-model="sa.default_audit_type._id"  ng-options="qs._id as qs.name for qs in question_sets">
 							
 						</select>
 
 					</td>
 					<td>
-						<input type="checkbox" ng-model="studyareas[$index].is_public" ng-checked="studyareas[$index].is_public=='1'"/>
+						<input type="checkbox"  ng-change="radio_update()" ng-model="sa.is_public" ng-checked="sa.is_public=='1'"/>
 					</td>
 					<td><a href="{{ sa_url_part + sa.id }}">Link</a></td>
 				</tr>

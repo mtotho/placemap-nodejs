@@ -36,6 +36,12 @@ exports.update = function(req, res) {
   Studyarea.findById(req.params.id, function (err, studyarea) {
     if (err) { return handleError(res, err); }
     if(!studyarea) { return res.send(404); }
+
+    if(req.body.default_audit_type._id!=null){
+      req.body.default_audit_type=req.body.default_audit_type._id;
+    }
+
+
     var updated = _.merge(studyarea, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
