@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var Studyarea = require('./studyarea.model');
 var AuditType = require('../audit_type/audit_type.model');
+var Question = require('../question/question.model');
+var async  = require('async');
 // Get list of studyareas
 exports.index = function(req, res) {
 
@@ -12,7 +14,7 @@ exports.index = function(req, res) {
        Studyarea.find(function (err, studyareas) {
         if(err) { return handleError(res, err); }
         return res.json(200, studyareas);
-      }).populate('default_audit_type').exec();
+      }).populate('default_audit_type').populate('default_audit_type.questions.question').exec();
 
   //filter by is_public field
   }else{
@@ -29,8 +31,23 @@ exports.show = function(req, res) {
   Studyarea.findById(req.params.id, function (err, studyarea) {
     if(err) { return handleError(res, err); }
     if(!studyarea) { return res.send(404); }
-    return res.json(studyarea);
-  }).populate('default_audit_type').exec();
+  
+  }).populate('default_audit_type').exec(function(err,data){
+
+    if (err) return handleError(err);
+    //populate sub sub document 'question'
+    var options = {
+      path: 'default_audit_type.questions.question',
+      model: 'Question'
+    };
+
+    if (err) return res.json(500);
+    Question.populate(data, options, function (err, sa) {
+      res.json(sa);
+    });
+
+
+  });
 };
 
 // Creates a new studyarea in the DB.

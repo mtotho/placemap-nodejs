@@ -7,7 +7,7 @@ angular.module('placemapApp')
   		var AuditType = $resource('/api/audit_types');
   		
   		var storage = userStorage.model.admin.studyareas.create;
-  		console.log(userStorage);
+ 
   		function init(){
 
   			if(storage.in_progress){
@@ -15,6 +15,7 @@ angular.module('placemapApp')
   				GMap.preSetZoom(parseInt(storage.zoom));
   				$scope.mapzoom=storage.zoom;
   				$scope.StudyAreaName=storage.name;
+  				$scope.chkListPublic=storage.is_public;
   			}
 
   			GMap.init("map_canvas");
@@ -32,7 +33,6 @@ angular.module('placemapApp')
 
 		 	});
 
-  			$scope.chkListPublic=false;
 
   			AuditType.query(function(result){
   				$scope.question_sets=result;
@@ -48,10 +48,11 @@ angular.module('placemapApp')
   			storage.lat=""+GMap.getCenter().lat();
 			storage.lng=""+GMap.getCenter().lng();
 			storage.zoom=GMap.getZoom();
+			storage.is_public=$scope.chkListPublic;
   		}
 
   		$scope.inputUpdated = function(){
-  			storage.in_progress=true;
+  			console.log(storage)
   			syncStorage();
   		}
   		$scope.zoomChange = function(){

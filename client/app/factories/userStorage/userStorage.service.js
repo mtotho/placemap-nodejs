@@ -15,7 +15,8 @@ angular.module('placemapApp')
                   lat:'',
                   lng:'',
                   zoom:'',
-                  name:''
+                  name:'',
+                  is_public:''
                 }
               }
 
@@ -25,6 +26,7 @@ angular.module('placemapApp')
         SaveState: function () {
             console.log("saving state");
             //console.log(service.model);
+        
             $cookieStore.put("user_data",angular.toJson(service.model));
 
             //sessionStorage.userService = angular.toJson(service.model);
@@ -32,7 +34,10 @@ angular.module('placemapApp')
 
         RestoreState: function () {
             console.log("restoring state (in service)");
-            service.model = angular.fromJson($cookieStore.get("user_data"));
+            if(!angular.isUndefined($cookieStore.get("user_data"))){
+              service.model = angular.fromJson($cookieStore.get("user_data"));
+            }
+            
         }
     }
 

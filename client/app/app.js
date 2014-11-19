@@ -74,8 +74,7 @@ angular.module('placemapApp', [
     });//end stateChangeStart
 
     window.onbeforeunload = function (event) {
-        console.log("beforelod");
-        $cookieStore.put("state_restored","false");
+      
         $rootScope.$broadcast('savestate');
     };
   });
