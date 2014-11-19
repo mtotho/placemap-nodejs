@@ -9,7 +9,7 @@
 			<input type="text" class="form-control" ng-model="saSearch"  /> <br />
 			<table id="tblStudyAreas" class="table table-striped">
 				<tr> 
-					<th>#</th>
+				
 					<th>Name</th>
 					<th>Marker Count</th>
 					<th>Question Set</th>
@@ -18,7 +18,7 @@
 				</tr>
 
 				<tr ng-repeat="sa in studyareas | filter: saSearch" ng-controller="AdminSAWatchCtrl">
-					<td>{{ sa.id }}</td>
+			
 					<td>{{ sa.name }}</td>
 					<td>{{ sa.placemarkers.length }}</td>
 					<td>

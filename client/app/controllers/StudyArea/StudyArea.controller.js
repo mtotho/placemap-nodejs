@@ -1,17 +1,19 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareaCtrl', function ($scope, GMap, $resource, $timeout, $stateParams) {
+  .controller('StudyareaCtrl', function ($scope, GMap, $resource, $timeout, $stateParams, StudyAreaMap, $rootScope) {
 	    var sa_id = $stateParams.studyarea_id;
 	 	var StudyArea = $resource('/api/studyareas/'+sa_id);
 
 	 	var selectedMarker;
 	 	var draggableSet = false;
 	 	var initSate = true; //initState is state before draggable is set for rating
-
+	 	var markerZindex=0;
+	 	var selectedResponse;
 	 	$scope.ratingModeEnabled=false;
     	$scope.qvopen = false; //initialize marker response (question view) panel to closed
     	$scope.marker;
+    	$scope.selectedMarker;
 
 	    function init(){
 
@@ -25,21 +27,14 @@ angular.module('placemapApp')
 	    	StudyArea.get(function(result){
 	    		$scope.studyarea=result;
 	    		console.log(result);
-    			GMap.setStudyArea(result);
-    			GMap.init("map_canvas");
-	  			map_resize2();
-	  			GMap.checkResize();
-	  			
-	  			GMap.loadMarkers(result.responses);
-
-				GMap.setDraggableIcon("grey");
+    			StudyAreaMap.init(result);
+    			StudyAreaMap.setRatingMode(false);
 				setRatingMode(false);
-	    		
+	    		map_resize2();
 
 	    		initListeners();
 
 	    	});
-
 
 	    	//Initialize Bootstrap objects
 			$('.collapse').collapse({
@@ -58,9 +53,35 @@ angular.module('placemapApp')
 			});
 	    }
 	    init();
+    	
+    	$rootScope.$on("response_click", function(){
+    		
+    		var selected = StudyAreaMap.getSelectedResponse();
+    	
+		   	
+	  
+	      	$scope.$apply(function(){
+	      		$scope.selectedMarker=selected;
+	      		$scope.responseShown=true;
+	      	});		
+	       	$(".response_panel").collapse("show");
 
+		   		//apply dbmarker data to the scope
+	   	  	//applyResponsePanel(dbmarker);
+
+	   	  	
+	   	  	if(window.debug)console.log("===Marker Clicked===");
+	   	  	if(window.debug)console.log(selected);
+		    if(window.debug)console.log(" ");
+
+			      	
+
+		//}
+    	});
+	    
 	    $scope.setRatingMode = function(bool){
 	    	$scope.ratingModeEnabled=bool;
+	    	StudyAreaMap.setRatingMode(bool);
 	    	setRatingMode(bool);
 	    }
 	    $scope.rdoColorChange = function(markerType){
@@ -148,9 +169,13 @@ angular.module('placemapApp')
 			
 			//Cancel marker placement if question view is hidden
 	        if(!enabled && draggableSet){
-	        	$scope.btnCancelMarkerPlacement();
+	        	//$scope.btnCancelMarkerPlacement();
+	        	GMap.lockDraggableMarker(false);
 	        }
 	    });
+
+
+
 	    function setRatingMode(bool){
 	    	if(bool){
 			
@@ -160,12 +185,12 @@ angular.module('placemapApp')
 				showToolTip();
 
 				$("#rating_panel").removeClass("opaque");
-				GMap.setDraggableIcon("grey");
+				//GMap.setDraggableIcon("grey");
 
 			}else{
 
 				GMap.enableDraggable(false);
-				$("#rating_panel").addClass("opaque");
+				//$("#rating_panel").addClass("opaque");
 			}
 	    }
 

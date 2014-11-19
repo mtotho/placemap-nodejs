@@ -20,8 +20,8 @@ angular.module('placemapApp')
 		this.mapOptions.disableDoubleClickZoom=true;
 		this.mapOptions.scaleControl=true;
 		this.mapOptions.disableDefaultUI=false;
-		this.studyarea;
-		this.placemarkers = new Object();
+		//this.studyarea;
+		//this.placemarkers = new Object();
 		this.mapmarkers = new Array();
 
 		this.icons={
@@ -113,6 +113,7 @@ angular.module('placemapApp')
 						    	
 			    });
 
+				this.mapmarkers = new Array();
 				/*
 			     google.maps.event.addListener(this.draggableMarker, 'mouseover', function() {
 			     
@@ -181,12 +182,18 @@ angular.module('placemapApp')
 				this.placemarkers[markers[i].id]=markers[i];
 			}
 
-			var mc = new MarkerClusterer(this.map, clusterMarkers, {
+			
+		}
+
+		this.showClustering = function(){
+			var mc = new MarkerClusterer(this.map, this.mapmarkers, {
 		  		  maxZoom: 19,
 		          gridSize: 20,
 		          styles: this.styles[0]
 			});
 		}
+
+
 		this.loadMarker = function(markerdata){
 
 			var marker = new google.maps.Marker({
@@ -195,7 +202,7 @@ angular.module('placemapApp')
 						    	draggable:false,
 						    	icon:{"url":this.icons[markerdata.icon], "anchor":new google.maps.Point(12,13)},
 						    	//title:markerdata.location_type,
-						    	response_id:markerdata._id
+						    	response_id:markerdata.response_id
 
 			    });
 			   
@@ -203,13 +210,6 @@ angular.module('placemapApp')
 		   	this.mapmarkers.push(marker);
 			
 		   	return marker;
-
-		    if(markerdata.participant_id==$cookieStore.get("placemap-participant_id")){
-
-		    	
-		    	//marker.setIcon(this.icons[markerdata.icon+"-delete"]);
-	    		
-		    }
 		}
 		this.getIcons = function(){
 			return this.icons;
@@ -231,12 +231,6 @@ angular.module('placemapApp')
 		}
 		this.getDraggableMarker = function (){
 			return this.draggableMarker;
-		}
-
-		this.setStudyArea = function(studyarea){
-			this.studyarea=studyarea;
-			this.mapOptions.center = new google.maps.LatLng(studyarea.lat, studyarea.lng);
-			this.mapOptions.zoom = studyarea.default_zoom;
 		}
 		this.getMap = function(){
 			return this.map;

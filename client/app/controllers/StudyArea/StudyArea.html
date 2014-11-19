@@ -22,23 +22,23 @@
 			<h3>Response</h3>
 
 			<div id="response_content">
-				<div ng-repeat="r in response_marker.response">
+				<div ng-repeat="r in selectedMarker.responses">
 					
 					
-					<div class="question_response" ng-hide="r.question_type!='check'">
-						<p class='question_text'>{{ studyarea.question_set.questions[$index].question_text }}</p>
+					<div class="question_response" ng-hide="studyarea.default_audit_type.questions[$index].question.question_type!='check'">
+						<p class='question_text'>{{ studyarea.default_audit_type.questions[$index].question.question_text }}</p>
 						<div class="row">
-							<div class="col-md-6" ng-repeat="(key,value) in r.response_json">
-								<p class='response_text'>{{ key }}</p>
+							<div class="col-md-6" ng-repeat="opt in r.opts">
+								<p class='response_text'>{{ opt }}</p>
 							</div>
 
 						</div>
 
 					</div>
 
-					<div class="question_response" ng-hide="r.question_type!='shortanswer'">
-						<p class='question_text'>{{ studyarea.question_set.questions[$index].question_text }}</p>
-						<p class='response_text'>{{ r.response_text }}</p>
+					<div class="question_response" ng-hide="studyarea.default_audit_type.questions[$index].question.question_type!='shortanswer'">
+						<p class='question_text'>{{ studyarea.default_audit_type.questions[$index].question.question_text }}</p>
+						<p class='response_text'>{{ r.text }}</p>
 
 					</div>
 					
@@ -97,6 +97,7 @@
 	    	
 
 	    	<button id="btnSelectMarkerLocation" type="button" data-ng-click="btnSetRating()"  class="btn">Rate Location</button>
+	    	<button type="button" data-ng-click="setRatingMode(false)"  class="btn btn-danger pull-right">Cancel</button>
 	    	<!--<button type="button" data-ng-click="btnDebug()"  class="btn">(debug)</button>-->
 	    
 
