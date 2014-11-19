@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Studyarea = require('./studyarea.model');
 var AuditType = require('../audit_type/audit_type.model');
 var Question = require('../question/question.model');
+var Response = require('../response/response.model');
 var async  = require('async');
 // Get list of studyareas
 exports.index = function(req, res) {
@@ -32,7 +33,7 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!studyarea) { return res.send(404); }
   
-  }).populate('default_audit_type').exec(function(err,data){
+  }).populate('responses').populate('default_audit_type').exec(function(err,data){
 
     if (err) return handleError(err);
     //populate sub sub document 'question'
@@ -41,11 +42,9 @@ exports.show = function(req, res) {
       model: 'Question'
     };
 
-    if (err) return res.json(500);
     Question.populate(data, options, function (err, sa) {
       res.json(sa);
     });
-
 
   });
 };

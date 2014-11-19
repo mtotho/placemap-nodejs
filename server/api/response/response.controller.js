@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Response = require('./response.model');
+var Studyarea = require('../studyarea/studyarea.model');
 
 // Get list of responses
 exports.index = function(req, res) {
@@ -24,7 +25,14 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   Response.create(req.body, function(err, response) {
     if(err) { return handleError(res, err); }
-    return res.json(201, response);
+    Studyarea.findById(req.body.study_area,function(err,sa){
+       if (err) { return handleError(res, err); }
+       sa.responses.push(response._id);
+       sa.save(function(err){
+         if (err) { return handleError(res, err); }
+         return res.json(201, response);
+       })
+    });
   });
 };
 

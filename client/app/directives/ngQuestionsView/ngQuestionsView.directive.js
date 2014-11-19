@@ -25,14 +25,16 @@ angular.module('placemapApp')
             // do something...
         })
       },
-      controller:function($scope){
+      controller:function($scope, $resource){
   		
         $scope.qindex = 0;
         $scope.curQuestion;
         $scope.progress=0;
         $scope.completion=false;
         $scope.qcount;
-        $scope.responses = new Object();
+        $scope.responses = new Array();
+
+        var Response = $resource('/api/responses');
 
     	function init(){
 
@@ -139,37 +141,55 @@ angular.module('placemapApp')
         }
         $scope.btnSubmit = function(){
            
+            var r = new Response();
+            r.lat= $scope.marker.lat;
+            r.lng= $scope.marker.lng;
+            r.icon=$scope.marker.icon;
+            r.audit_type = $scope.study_area.default_audit_type._id;
+            r.responses = new Array();
+            r.study_area=$scope.study_area._id;
 
-            var data = {
-                "response":{
-                    "question_set":{
-                        "id":$scope.study_area.default_audit_type._id
-                    } ,
-                    "study_area_id": $scope.study_area.id,
-                    "responses":$scope.responses,
-                    "marker":$scope.marker
+            for(var i=0; i<$scope.responses.length; i++){
+                
+                var tempR = new Object();
+                tempR.text = $scope.responses[i].text;
+                tempR.opts = new Array();
+                tempR.question= $scope.responses[i].question;
+
+                for(var key in $scope.responses[i].opts){
+                    tempR.opts.push(key);
                 }
+
+
+                r.responses.push(tempR);
             }
 
+
+          
+
             if(window.debug)console.log("===Marker Post===");
-            if(window.debug)console.log(data);
+            if(window.debug)console.log(r);
             if(window.debug)console.log(" ");
 
-            //post marker to database
-            api.postMarker(data).then(function(response){
-                
-                if(window.debug)console.log("===Marker Post - Response===");
-                if(window.debug)console.log(response);
-                if(window.debug)console.log(" ");
 
+            r.$save(function(result){
+                console.log(result);
+                $scope.study_area.responses.push(result);
+                $scope.qvopen=false;
+                $scope.responses=new Object();
+               // $scope.newQS="";
+            });
+            //post marker to database
+            //api.postMarker(data).then(function(response){
+               
               
-                gmap.loadMarker(response.marker);
+             //   gmap.loadMarker(response.marker);
                 
                 //hide the qv modal
-                $scope.qvopen=false;
-                 $scope.responses = new Object();
+               // $
+              //   $scope.responses = new Object();
             
-            });
+           // });
 
          
         }
@@ -180,14 +200,16 @@ angular.module('placemapApp')
           
             $scope.curQuestion = $scope.study_area.default_audit_type.questions[qindex].question;
             
-           if(angular.isUndefined($scope.responses[$scope.curQuestion._id])){
-                $scope.responses[$scope.curQuestion._id] = new Object();
-                $scope.responses[$scope.curQuestion._id].opts = new Object();
+           if(angular.isUndefined($scope.responses[qindex])){
+                $scope.responses[qindex] = new Array();
+                $scope.responses[qindex].opts = new Object();
            } 
-            
+       
 
-            $scope.responses[$scope.curQuestion._id]._id=$scope.curQuestion.question_id;
-            $scope.responses[$scope.curQuestion._id].question_type =$scope.curQuestion.question_type;
+            $scope.responses[qindex].question=$scope.curQuestion._id;
+          
+
+          //  $scope.responses[qindex].question_type =$scope.curQuestion.question_type;
 
             if(window.debug)console.log("=== Current Question===");
             if(window.debug)console.log($scope.curQuestion);

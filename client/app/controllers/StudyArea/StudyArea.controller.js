@@ -24,16 +24,17 @@ angular.module('placemapApp')
 
 	    	StudyArea.get(function(result){
 	    		$scope.studyarea=result;
-
+	    		console.log(result);
     			GMap.setStudyArea(result);
     			GMap.init("map_canvas");
 	  			map_resize2();
-	  			
 	  			GMap.checkResize();
+	  			
+	  			GMap.loadMarkers(result.responses);
 
 				GMap.setDraggableIcon("grey");
 				setRatingMode(false);
-	    		console.log(result);
+	    		
 
 	    		initListeners();
 

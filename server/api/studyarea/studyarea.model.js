@@ -10,7 +10,7 @@ var StudyareaSchema = new Schema({
   default_zoom: Number,
   timestamp: { type: Date, default: Date.now },
   default_audit_type: {type: Schema.ObjectId, ref:'AuditType'},
-  responses:[{type: Schema.ObjectId, ref:'AuditType'}],
+  responses:[{type: Schema.ObjectId, ref:'Response'}],
   is_public: Boolean
 });
 

@@ -22,7 +22,7 @@
 
 					<div class="check" ng-repeat="o in curQuestion.opts">
 		    			<label>
-		    				<input  type="checkbox" name="locationType" ng-model="responses[curQuestion.question_id].opts[o.option_text]" value="street">
+		    				<input  type="checkbox" name="locationType" ng-model="responses[qindex].opts[o.option_text].value" value="true">
 		    				{{ o.option_text }}
 		    			</label>
 		    		</div>
@@ -34,7 +34,7 @@
 
 					<div class="check" ng-repeat="o in curQuestion.opts">
 		    			<label>
-		    				<input  type="radio" name="locationType" ng-model="responses[curQuestion.question_id].opts[o.option_text]" value="street">
+		    				<input  type="radio" name="locationType" ng-model="responses[qindex].opts[o.option_text].value" value="true">
 		    				{{ o.option_text }}
 		    			</label>
 		    		</div>
@@ -43,7 +43,7 @@
 				<div ng-show="curQuestion.question_type=='shortanswer'">
 					
 					<p>{{ curQuestion.question_text }} </p>
-			    	<textarea class="form-control" ng-model="responses[curQuestion.question_id].text" rows="5"></textarea>
+			    	<textarea class="form-control" ng-model="responses[qindex].text" rows="5"></textarea>
 				</div>
 
 				<div ng-show="completion">

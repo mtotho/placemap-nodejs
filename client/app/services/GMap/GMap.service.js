@@ -195,7 +195,7 @@ angular.module('placemapApp')
 						    	draggable:false,
 						    	icon:{"url":this.icons[markerdata.icon], "anchor":new google.maps.Point(12,13)},
 						    	//title:markerdata.location_type,
-						    	marker_id:markerdata.id
+						    	response_id:markerdata._id
 
 			    });
 			   

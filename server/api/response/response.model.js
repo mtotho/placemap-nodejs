@@ -4,12 +4,14 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ResponseSchema = new Schema({
-  timestamp: Date,
+  timestamp: { type: Date, default: Date.now },
   lat: String,
   lng: String,
-  question_responses:[
+  icon:String,
+  responses:[
   	{	
-  		response:String,
+      text:String,
+      opts:[String],
   		question:{type: Schema.ObjectId, ref:'Question'}
   	}
   ],
