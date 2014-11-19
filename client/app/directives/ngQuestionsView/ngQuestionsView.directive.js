@@ -178,16 +178,16 @@ angular.module('placemapApp')
             $scope.progress = (qindex) / $scope.study_area.default_audit_type.questions.length;
             $("ng-questions-view .progress-bar").css('width', $scope.progress*100 + "%" );
           
-            $scope.curQuestion = $scope.study_area.default_audit_type.questions[qindex];
+            $scope.curQuestion = $scope.study_area.default_audit_type.questions[qindex].question;
             
-           if(angular.isUndefined($scope.responses[$scope.curQuestion.question_id])){
-                $scope.responses[$scope.curQuestion.question_id] = new Object();
-                $scope.responses[$scope.curQuestion.question_id].opts = new Object();
+           if(angular.isUndefined($scope.responses[$scope.curQuestion._id])){
+                $scope.responses[$scope.curQuestion._id] = new Object();
+                $scope.responses[$scope.curQuestion._id].opts = new Object();
            } 
             
 
-            $scope.responses[$scope.curQuestion.question_id].question_id=$scope.curQuestion.question_id;
-            $scope.responses[$scope.curQuestion.question_id].question_type =$scope.curQuestion.question_type;
+            $scope.responses[$scope.curQuestion._id]._id=$scope.curQuestion.question_id;
+            $scope.responses[$scope.curQuestion._id].question_type =$scope.curQuestion.question_type;
 
             if(window.debug)console.log("=== Current Question===");
             if(window.debug)console.log($scope.curQuestion);

@@ -20,9 +20,21 @@
 					<h4>{{ curQuestion.question_text }}</h4>
 
 
-					<div class="check" ng-repeat="o in curQuestion.jsonOpts">
+					<div class="check" ng-repeat="o in curQuestion.opts">
 		    			<label>
 		    				<input  type="checkbox" name="locationType" ng-model="responses[curQuestion.question_id].opts[o.option_text]" value="street">
+		    				{{ o.option_text }}
+		    			</label>
+		    		</div>
+				
+				</div>
+				<div ng-show="curQuestion.question_type=='radio'">
+					<h4>{{ curQuestion.question_text }}</h4>
+
+
+					<div class="check" ng-repeat="o in curQuestion.opts">
+		    			<label>
+		    				<input  type="radio" name="locationType" ng-model="responses[curQuestion.question_id].opts[o.option_text]" value="street">
 		    				{{ o.option_text }}
 		    			</label>
 		    		</div>
