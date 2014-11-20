@@ -29,7 +29,7 @@ angular.module('placemapApp')
 	    		console.log(result);
 	    		//console.log("derp");
     			StudyAreaMap.init(result);
-    		
+
     			//StudyAreaMap.setRatingMode(false);
 				$scope.setRatingMode(false);
 	    		map_resize2();
@@ -176,7 +176,8 @@ angular.module('placemapApp')
 			
 			//Cancel marker placement if question view is hidden
 	        if(!enabled && StudyAreaMap.isRatingLocked()){
-	        	cancelMarkerLock();
+	        	//cancelMarkerLock();
+	        	$scope.setRatingMode(false);
 	        }
 	    });
 

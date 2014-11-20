@@ -25,7 +25,7 @@ angular.module('placemapApp')
             // do something...
         })
       },
-      controller:function($scope, $resource){
+      controller:function($scope, $resource, StudyAreaMap){
   		
         $scope.qindex = 0;
         $scope.curQuestion;
@@ -175,6 +175,7 @@ angular.module('placemapApp')
             r.$save(function(result){
                 console.log(result);
                 $scope.study_area.responses.push(result);
+                StudyAreaMap.loadResponse(result);
                 $scope.qvopen=false;
                 $scope.responses=new Object();
                // $scope.newQS="";
