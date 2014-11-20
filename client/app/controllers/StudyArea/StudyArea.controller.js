@@ -27,11 +27,13 @@ angular.module('placemapApp')
 	    	StudyArea.get(function(result){
 	    		$scope.studyarea=result;
 	    		console.log(result);
+	    		//console.log("derp");
     			StudyAreaMap.init(result);
+    		
     			//StudyAreaMap.setRatingMode(false);
 				$scope.setRatingMode(false);
 	    		map_resize2();
-
+    			GMap.checkResize();
 	    		//initListeners();
 
 	    	});

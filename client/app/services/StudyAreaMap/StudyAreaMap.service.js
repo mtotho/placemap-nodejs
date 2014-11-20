@@ -22,8 +22,7 @@ angular.module('placemapApp')
 
   		//initialize the map object on the cavas
 		GMap.init("map_canvas");
-
-		//set the default color for the draggable marker
+				//set the default color for the draggable marker
 		GMap.setDraggableIcon("grey");
 
 		//initialize all map action listeners
@@ -34,11 +33,14 @@ angular.module('placemapApp')
   		for(var i=0; i<this.studyarea.responses.length; i++){
   			this.loadResponse(this.studyarea.responses[i]);
   		}
+  		//google.maps.event.trigger(GMap.getMap(), 'resize');
+  		//GMap.checkResize();
 
   		//enable marker clustering
   		GMap.showClustering();
+  		
 
-  	}
+  	}	
 
   	//loadResponse(): load a single response onto the map and into the response array
   	this.loadResponse = function(response){
@@ -89,6 +91,7 @@ angular.module('placemapApp')
 			}
   		}else{
   			GMap.enableDraggable(false);
+  			this.hideToolTip();
   		}
 
   	}
@@ -155,10 +158,13 @@ angular.module('placemapApp')
 		});
      	google.maps.event.addListener(GMap.getMap(), 'idle', function() {
 			instance.positionTooltip();
+			
+			//google.maps.event.trigger(GMap.getMap(), 'resize');
      	});
 
 	     	//Map click event
-		google.maps.event.addListener(GMap.getMap(), 'click', function(event) {
+		google.maps.event.addListener(GMap.getMap(), 'center_changed', function(event) {
+			//GMap.checkResize();
 		   	//Hide the response panel
 		   //$scope.$apply(function(){
      			//hideResponse();
@@ -181,6 +187,9 @@ angular.module('placemapApp')
 
 		}
 	}//end: showToolTip();
+	this.hideToolTip = function(){
+		$("#draggableTooltip").tooltip('hide');
+	}
 	this.positionTooltip = function(){
 		//console.log(pos);
 		var pos = GMap.getXY(GMap.getDraggableMarker().getPosition());

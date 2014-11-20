@@ -126,7 +126,8 @@ angular.module('placemapApp')
 				 
 	 			 });
 	*/
-				
+				google.maps.event.trigger(this.map, 'resize');
+			this.map.setCenter(this.mapOptions.center);
 			  //  autosize();
 			    this.checkResize();
 		}
