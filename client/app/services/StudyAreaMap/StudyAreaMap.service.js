@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('placemapApp')
-  .service('StudyAreaMap', function (GMap, $rootScope) {
+  .service('StudyAreaMap', function (GMap, $rootScope, $timeout) {
   
   	this.studyarea;
   	this.responses;
   	this.selectedResponse; //id of selected response
   	this.rating_mode; //boolean, whether or not user is rating
+  	this.rating_lock;
   	this.markerZ=0;
 
   	var instance = this;
@@ -22,11 +23,13 @@ angular.module('placemapApp')
   		//initialize the map object on the cavas
 		GMap.init("map_canvas");
 
-		
+		//set the default color for the draggable marker
 		GMap.setDraggableIcon("grey");
-	//setRatingMode(false);
-	    		
 
+		//initialize all map action listeners
+		this.initListeners();
+	    		
+		//Load responses onto the map
   		this.responses = new Object();
   		for(var i=0; i<this.studyarea.responses.length; i++){
   			this.loadResponse(this.studyarea.responses[i]);
@@ -37,6 +40,7 @@ angular.module('placemapApp')
 
   	}
 
+  	//loadResponse(): load a single response onto the map and into the response array
   	this.loadResponse = function(response){
   		var gMarker = GMap.loadMarker({
   			"lat":response.lat,
@@ -48,86 +52,123 @@ angular.module('placemapApp')
   		response.gMarker=gMarker;
   		this.responses[response._id]=response;
 
+  		//Marker Click event
 		google.maps.event.addListener(gMarker, 'click', function() {
 		   		
-		   		if(!instance.rating_mode){
+		   		//If we were rating, disable rating mode
+		   		if(instance.rating_mode){
+		   			instance.setRatingMode(false);
+		   		}
 
+		   		//If not already locked onto a location, allow selecting of other markers
+		   		if(!instance.rating_lock){
+
+		   			//Deselect any existing response
 		   			if(instance.selectedResponse != null){
-						instance.selectedResponse.gMarker.setIcon({"url":GMap.getIcons()[instance.selectedResponse.icon], "anchor":new google.maps.Point(12,13)});
+						instance.deselectResponse(instance.selectedResponse._id);
 					}
 
-			   		var selectedResponse = instance.responses[this.response_id];
-			   		instance.selectedResponse=selectedResponse;
-			   		
-			   		this.setZIndex(instance.markerZ);
-		   			instance.markerZ++
+					//Select the marker we just clicked
+					instance.selectResponse(this.response_id);
 
-
-			   		this.setIcon({"url":GMap.getIcons()[selectedResponse.icon+"-select"], "anchor":new google.maps.Point(12,13)});
-
-
-
+					//Broadcast click action back to controller
 			   		$rootScope.$broadcast('response_click');
-
-
 		   		}
-		   		//Return previously selected marker icon to default
-				
-		   		//
-		   		//console.log(selectedResponse);
-		   		/*
-		   	//ONLY show response if not currently rating
-		   	if(!setMarkerIsClicked){
-		  
-		   		this.setZIndex(markerZindex);
-		   		markerZindex++
-
-		   		$scope.btnCancelMarkerPlacement();
-		   		//If another marker has already been selected, revert that marker's icon back to normal 
-		   		if(!angular.isUndefined(selectedMarker)){
-		   			selectedMarker.setIcon({"url":gmap.getIcons()[selectedDBMarker.icon], "anchor":new google.maps.Point(12,13)});
-		   		}
-		   		//Set the selected marker to be this current one we just clicked
-		   		selectedMarker=this;
-
-		   		//Grab the database marker 'placemap marker' object associated with this google map marker 
-		     	var marker_id=this.marker_id;
-		     	var dbmarker = placemarkers[marker_id];
-
-		     	//set the selected DB marker for use elsewhere
-		   		selectedDBMarker = dbmarker;
-
-		   		//apply dbmarker data to the scope
-		   	  	applyResponsePanel(dbmarker);
-
-		   	  	//set the icon of the selected marker to a noticeably different one so we can distinguish
-		   	  	this.setIcon({"url":gmap.getIcons()[dbmarker.icon+"-select"], "anchor":new google.maps.Point(12,13)});
-		   	  	
-		   	  	if(window.debug)console.log("===Marker Clicked===");
-		   	  	if(window.debug)console.log(dbmarker);
-			    if(window.debug)console.log(" ");
-
-		      	$(".response_panel").collapse("show");
-		      	$scope.$apply(function(){
-		      		$scope.responseShown=true;
-		      	});
-		      	
-*/
-		//  	}
 	    
 		});//end marker click
 		
   	}
+  	//toggle rating mode. enables draggable marker and tooltip
   	this.setRatingMode = function(bool){
   		this.rating_mode=bool;
+  		if(bool){
+  			GMap.enableDraggable(true);
+  			this.showToolTip();
+			if(this.selectedResponse != null){
+				this.deselectResponse(this.selectedResponse._id);
+			}
+  		}else{
+  			GMap.enableDraggable(false);
+  		}
+
+  	}
+  	this.deselectResponse = function(id){
+  		var deselectedResponse = this.responses[id];
+  		deselectedResponse.gMarker.setIcon({"url":GMap.getIcons()[deselectedResponse.icon], "anchor":new google.maps.Point(12,13)});
+  	}
+
+  	//set the selected response and update the marker icon
+  	this.selectResponse = function(id){
+  		this.selectedResponse=this.responses[id];
+   		
+   		this.selectedResponse.gMarker.setZIndex(this.markerZ);
+		this.markerZ++
+
+			//Change icon to make it clear which is selected
+   		this.selectedResponse.gMarker.setIcon({"url":GMap.getIcons()[this.selectedResponse.icon+"-select"], "anchor":new google.maps.Point(12,13)});
+  	}
+  	this.getRatingMode = function(){
+  		return this.rating_mode;
+  	}
+  	this.lockRating = function(bool){
+  		this.rating_lock = bool;
+		//if(bool){
+		
+			///hideResponse();
+
+		GMap.lockDraggableMarker(bool);
+		if(!bool)GMap.setDraggableIcon("grey");
+			//showToolTip();
+  	}
+  	this.isRatingLocked = function(){
+  		return this.rating_lock;
   	}
   	this.getSelectedResponse = function(){
   		return this.selectedResponse;
   	}
-  	
 
-	function showToolTip(){
-		if($scope.ratingModeEnabled){
+  	this.initListeners = function(){
+		google.maps.event.addListener(GMap.getDraggableMarker(), 'mouseover', function() {
+     		GMap.getDraggableMarker().setAnimation(null);
+ 		});
+
+     	//Start draggable marker bounce upon mouseout
+     	google.maps.event.addListener(GMap.getDraggableMarker(), 'mouseout', function() {
+	     	if(!this.rating_mode){ //We do not want to animate marker if the user has locked in a location to rate
+	 			GMap.getDraggableMarker().setAnimation(google.maps.Animation.BOUNCE);
+		 	}
+		 });
+
+		google.maps.event.addListener(GMap.getDraggableMarker(), 'drag', function(){
+	
+			instance.positionTooltip();
+		});
+     	google.maps.event.addListener(GMap.getMap(), 'dblclick', function(event) {
+     		GMap.getDraggableMarker().setPosition(event.latLng);
+     		GMap.getDraggableMarker().setAnimation(google.maps.Animation.BOUNCE);
+     	});
+     	google.maps.event.addListener(GMap.getMap(), 'dragstart', function() {
+     	
+     	});
+		google.maps.event.addListener(GMap.getMap(), 'drag', function(){
+			instance.positionTooltip();
+		});
+     	google.maps.event.addListener(GMap.getMap(), 'idle', function() {
+			instance.positionTooltip();
+     	});
+
+	     	//Map click event
+		google.maps.event.addListener(GMap.getMap(), 'click', function(event) {
+		   	//Hide the response panel
+		   //$scope.$apply(function(){
+     			//hideResponse();
+     		//});
+ 		});
+
+	}
+
+	this.showToolTip = function(){
+		if(this.rating_mode){
 			var pos = GMap.getXY(GMap.getDraggableMarker().getPosition());
 			$("#draggableTooltip").css("top", pos.y-40);
 			$("#draggableTooltip").css("left", pos.x+15);
@@ -140,7 +181,7 @@ angular.module('placemapApp')
 
 		}
 	}//end: showToolTip();
-	function positionTooltip(){
+	this.positionTooltip = function(){
 		//console.log(pos);
 		var pos = GMap.getXY(GMap.getDraggableMarker().getPosition());
 		

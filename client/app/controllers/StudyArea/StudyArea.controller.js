@@ -28,11 +28,11 @@ angular.module('placemapApp')
 	    		$scope.studyarea=result;
 	    		console.log(result);
     			StudyAreaMap.init(result);
-    			StudyAreaMap.setRatingMode(false);
-				setRatingMode(false);
+    			//StudyAreaMap.setRatingMode(false);
+				$scope.setRatingMode(false);
 	    		map_resize2();
 
-	    		initListeners();
+	    		//initListeners();
 
 	    	});
 
@@ -58,7 +58,9 @@ angular.module('placemapApp')
     		
     		var selected = StudyAreaMap.getSelectedResponse();
     	
-		   	
+
+   			$scope.ratingModeEnabled=StudyAreaMap.getRatingMode();
+		   //	
 	  
 	      	$scope.$apply(function(){
 	      		$scope.selectedMarker=selected;
@@ -82,20 +84,26 @@ angular.module('placemapApp')
 	    $scope.setRatingMode = function(bool){
 	    	$scope.ratingModeEnabled=bool;
 	    	StudyAreaMap.setRatingMode(bool);
-	    	setRatingMode(bool);
+
+			
+			if(bool){
+			
+				hideResponse();
+
+			}else{
+				cancelMarkerLock();
+				
+			}
+	    	//setRatingMode(bool);
 	    }
 	    $scope.rdoColorChange = function(markerType){
 
 			if(markerType!="undefined"){
-				hideResponse();
-				//setRatingMode(true);
-				//set the draggable icon color
-				//var pos = gmap.getDraggableMarker().getPosition();
+			
 				GMap.setDraggableIcon("light-"+$scope.markerType);
 
 				//Replace the draggable marker on the map (it seems to disapear from the map when you change icon)
 				GMap.getDraggableMarker().setMap(GMap.getMap());
-
 
 				//set the animation to bounce to the user can see where it is placed.
 				GMap.getDraggableMarker().setAnimation(google.maps.Animation.BOUNCE);
@@ -110,9 +118,10 @@ angular.module('placemapApp')
 		$scope.btnSetRating = function(){
 
 			//Don't allow button click if it's already clicked or no maarker rating is defined
-			if(!draggableSet && $scope.markerType!="undefined"){
+			if(!StudyAreaMap.isRatingLocked() && $scope.markerType!="undefined"){
 				//flag so we know this button is clicked
-				draggableSet = true;
+				
+				StudyAreaMap.lockRating(true);
 
 				//indicate button is pressed
 				$("#btnSelectMarkerLocation").addClass("active");
@@ -120,9 +129,6 @@ angular.module('placemapApp')
 				//Hide any response panels showing 
 				$(".response_panel").collapse("hide");
 				
-				//lock the draggable marker into place (and stop the bouncing)
-				GMap.lockDraggableMarker(true);
-
 				//define marker so we can post it to db should user go through with questions
 				var pos =  GMap.getDraggableMarker().getPosition();
 				$scope.marker={
@@ -140,11 +146,10 @@ angular.module('placemapApp')
 		}
 
 		//Cancel the the marker rating and location lock
-		$scope.btnCancelMarkerPlacement = function(){
-			//reflag the button as not clicked
-			draggableSet=false;
-
-			setRatingMode(false);
+		function cancelMarkerLock(){
+		
+			StudyAreaMap.lockRating(false);
+			//setRatingMode(false);
 
 		  	$scope.markerType=null;
 			
@@ -168,108 +173,18 @@ angular.module('placemapApp')
 		$scope.$watch('qvopen', function(enabled){
 			
 			//Cancel marker placement if question view is hidden
-	        if(!enabled && draggableSet){
-	        	//$scope.btnCancelMarkerPlacement();
-	        	GMap.lockDraggableMarker(false);
+	        if(!enabled && StudyAreaMap.isRatingLocked()){
+	        	cancelMarkerLock();
 	        }
 	    });
 
-
-
-	    function setRatingMode(bool){
-	    	if(bool){
-			
-				hideResponse();
-				GMap.enableDraggable(true);
-
-				showToolTip();
-
-				$("#rating_panel").removeClass("opaque");
-				//GMap.setDraggableIcon("grey");
-
-			}else{
-
-				GMap.enableDraggable(false);
-				//$("#rating_panel").addClass("opaque");
-			}
-	    }
-
     	function hideResponse(){
+    		//Hide the response panel
 			$(".response_panel").collapse("hide");
-				//If there is a marker selected (for viewing responses) unselect that marker (change the icon back to default)
-	     	if(!angular.isUndefined(selectedMarker)){
-	   			selectedMarker.setIcon({"url":GMap.getIcons()[selectedDBMarker.icon], "anchor":new google.maps.Point(12,13)});
-	   		}
-	      	
- 			$scope.responseShown = false;
- 		
+ 			$scope.responseShown = false;	
 		}
 
-		function showToolTip(){
-			if($scope.ratingModeEnabled){
-				var pos = GMap.getXY(GMap.getDraggableMarker().getPosition());
-				$("#draggableTooltip").css("top", pos.y-40);
-				$("#draggableTooltip").css("left", pos.x+15);
-				$("#draggableTooltip").tooltip('show');
-				
-				var tooltipWidth = $('.tooltip').width();
-				$timeout(function(){
-					$("#draggableTooltip").tooltip('hide');
-				}, 4000)
 
-			}
-		}//end: showToolTip();
-		function positionTooltip(){
-			//console.log(pos);
-			var pos = GMap.getXY(GMap.getDraggableMarker().getPosition());
-			
-			$(".tooltip").css("top",pos.y-40);
-			$(".tooltip").css("left",pos.x+15);
-			
-			
-			if(pos.x<0 || pos.y< 40 || pos.x>(window.innerWidth-$('.tooltip').width()-45) || pos.y>window.innerHeight){
-				$("#draggableTooltip").tooltip("hide");
-			}
-		}//end: positionTooltip()
-		function initListeners(){
-			google.maps.event.addListener(GMap.getDraggableMarker(), 'mouseover', function() {
-	     		GMap.getDraggableMarker().setAnimation(null);
-	 		});
-
-	     	//Start draggable marker bounce upon mouseout
- 	     	google.maps.event.addListener(GMap.getDraggableMarker(), 'mouseout', function() {
-		     	if(!draggableSet){ //We do not want to animate marker if the user has locked in a location to rate
-	     			GMap.getDraggableMarker().setAnimation(google.maps.Animation.BOUNCE);
-			 	}
-			 });
-
-			google.maps.event.addListener(GMap.getDraggableMarker(), 'drag', function(){
-		
-				positionTooltip();
-			});
- 	     	google.maps.event.addListener(GMap.getMap(), 'dblclick', function(event) {
- 	     		GMap.getDraggableMarker().setPosition(event.latLng);
-		     	GMap.getDraggableMarker().setAnimation(google.maps.Animation.BOUNCE);
- 	     	});
- 	     	google.maps.event.addListener(GMap.getMap(), 'dragstart', function() {
- 	     	
- 	     	});
-			google.maps.event.addListener(GMap.getMap(), 'drag', function(){
-				positionTooltip();
-			});
- 	     	google.maps.event.addListener(GMap.getMap(), 'idle', function() {
-				positionTooltip();
- 	     	});
-
- 	     	//Map click event
-			google.maps.event.addListener(GMap.getMap(), 'click', function(event) {
-			   	//Hide the response panel
-			   	$scope.$apply(function(){
-	     			hideResponse();
-	     		});
-	 		});
-
-		}
   });
 
 function map_resize2(){

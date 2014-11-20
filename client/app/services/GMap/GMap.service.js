@@ -142,7 +142,7 @@ angular.module('placemapApp')
 
 			if(bool==true){
 				this.draggableMarker.setMap(this.map);
-				this.draggableMarker.setPosition(this.mapOptions.center);
+				this.draggableMarker.setPosition(this.map.getCenter());
 			}else{
 				this.draggableMarker.setMap(null);
 			}
@@ -168,22 +168,7 @@ angular.module('placemapApp')
 				this.draggableMarker.setAnimation(google.maps.Animation.BOUNCE);
 			}
 		}
-		this.loadMarkers = function(markers){
-			
-			
-			var clusterMarkers = new Array();
 
-			this.placemarkers = new Array();
-			this.mapmarkers = new Array();
-			for(var i =0; i<markers.length; i++){
-				var tempmarker = this.loadMarker(markers[i]);
-
-				clusterMarkers.push(tempmarker);
-				this.placemarkers[markers[i].id]=markers[i];
-			}
-
-			
-		}
 
 		this.showClustering = function(){
 			var mc = new MarkerClusterer(this.map, this.mapmarkers, {
