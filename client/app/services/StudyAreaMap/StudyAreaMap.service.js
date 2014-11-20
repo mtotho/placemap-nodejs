@@ -61,6 +61,7 @@ angular.module('placemapApp')
 		   		if(instance.rating_mode){
 		   			instance.setRatingMode(false);
 		   		}
+		   		
 
 		   		//If not already locked onto a location, allow selecting of other markers
 		   		if(!instance.rating_lock){

@@ -8,6 +8,10 @@ var ResponseSchema = new Schema({
   lat: String,
   lng: String,
   icon:String,
+  address:{
+    address_components:[Schema.Types.Mixed],
+    formatted_address:String
+  },
   responses:[
   	{	
       text:String,

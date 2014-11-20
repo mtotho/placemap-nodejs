@@ -147,7 +147,9 @@ angular.module('placemapApp')
             r.icon=$scope.marker.icon;
             r.audit_type = $scope.study_area.default_audit_type._id;
             r.responses = new Array();
+            r.address=new Object();
             r.study_area=$scope.study_area._id;
+
 
             for(var i=0; i<$scope.responses.length; i++){
                 
@@ -165,22 +167,33 @@ angular.module('placemapApp')
             }
 
 
+
+            var gc = new google.maps.Geocoder();
+
+            gc.geocode({"location":new google.maps.LatLng(r.lat,r.lng)}, function(result){
+                r.address.address_components=result[0].address_components;
+                r.address.formatted_address=result[0].formatted_address;
+
+                if(window.debug)console.log("===Marker Post===");
+                if(window.debug)console.log(r);
+                if(window.debug)console.log(" ");
+
+
+                r.$save(function(result){
+                   // console.log(result);
+                    $scope.study_area.responses.push(result);
+                    StudyAreaMap.loadResponse(result);
+                    $scope.qvopen=false;
+                    $scope.responses=new Object();
+                   // $scope.newQS="";
+                });
+            //post marker to database
+            });
+            
+
           
 
-            if(window.debug)console.log("===Marker Post===");
-            if(window.debug)console.log(r);
-            if(window.debug)console.log(" ");
-
-
-            r.$save(function(result){
-                console.log(result);
-                $scope.study_area.responses.push(result);
-                StudyAreaMap.loadResponse(result);
-                $scope.qvopen=false;
-                $scope.responses=new Object();
-               // $scope.newQS="";
-            });
-            //post marker to database
+         
             //api.postMarker(data).then(function(response){
                
               
