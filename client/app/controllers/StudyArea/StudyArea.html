@@ -4,7 +4,12 @@
 	<div class="col-md-6">
 		<p class="sa_label">STUDY AREA </p><span class="glyphicon glyphicon-chevron-right"></span><p class="sa_title"> {{ studyarea.name }}</p>
 	</div>
-		
+	<div class="col-md-6">
+		<ul id="navMapList" class="nav nav-pills pull-right">
+			<li class="active"><a >Map</a></li>
+			<li><a href="studyarea/{{studyarea._id}}/data">List</a></li>
+		</ul>
+	</div>	
 	<div class="clearfix"></div>
 </div>
 <div id="page_studyarea" class="map_outter_div">

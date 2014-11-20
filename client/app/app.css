@@ -149,7 +149,8 @@ header .nav li.lnkLogout>a{
     background-color:#BFD29E;
         padding-top: 1em;
         padding-left:5px;
-
+        padding-right:5px;
+    
         padding-bottom:1em;
 }
 #info_area .glyphicon{
@@ -160,7 +161,7 @@ header .nav li.lnkLogout>a{
 }
 #info_area .sa_title{
     border:1px solid white;
-    border-radius: 3px;
+    border-radius: 3px; 
     font-size:1.5em;
     color:white;
     padding:0.25em 0.25em 0.25em 0.25em;
@@ -410,7 +411,10 @@ table th{
     font-weight:bold;
 }
 
-
+#info_area li a{
+    padding-top:5px;
+    padding-bottom:5px;
+}
 
 
 /*admin*/

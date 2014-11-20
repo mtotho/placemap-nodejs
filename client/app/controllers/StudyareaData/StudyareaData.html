@@ -1,16 +1,26 @@
 
-<div id="info_area" class="container-fluid">
+<div id="info_area">
 	
 	<div class="col-md-6">
 		<p class="sa_label">STUDY AREA </p><span class="glyphicon glyphicon-chevron-right"></span><p class="sa_title"> {{ studyarea.name }}</p>
 	</div>
-		
+	<div class="col-md-6">
+		<ul id="navMapList" class="nav nav-pills pull-right">
+			<li><a href="studyarea/{{studyarea._id}}">Map</a></li>
+			<li  class="active"><a>List</a></li>
+		</ul>
+	</div>			
 	<div class="clearfix"></div>
 </div>
 <div id="sa_data">
 
-	<div ng-repeat="r in studyarea.responses">
-		location: {{ r.lat }}
+	<div ng-repeat="r in studyarea.responses" class="row">
+		
+
+		<div class="col-md-2">
+
+			{{r.icon}}
+		</div>
 	</div>
 
 </div>
