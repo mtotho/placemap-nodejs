@@ -11,10 +11,24 @@
 				<th>Role</th>
 			</tr>
 
-			<tr ng-repeat="u in users">
-				<td>{{ u.name }}</td>
-				<td>{{ u.email }}</td>
-				<td>{{ u.role }}</td>
+			<tr ng-repeat="u in users"  ng-show="u.edit_mode">
+
+				<form  role="form"  name="form2" ng-submit="saveUser(form2)">
+					<td><input type="text"  ng-model="u.name" class="form-control" type="text"  value="{{ u.name }}" /></td>
+					<td><input type="email"  ng-model="u.email" class="form-control" type="text"  value="{{ u.email }}" /></td>
+					<td>
+						<select name="roleselect" ng-model="u.role" class="form-control" ng-options="u for u in userRoles" required>
+												
+						</select>
+					</td>
+				
+				</form>
+			</tr>
+
+			<tr ng-repeat="u in users"  ng-show="u.edit_mode!=true">
+					<td>{{ u.name }}</td>
+					<td>{{ u.email }}</td>
+					<td>{{ u.role }}</td>
 			
 			</tr>
 		</table>

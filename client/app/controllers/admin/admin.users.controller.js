@@ -4,6 +4,7 @@ angular.module('placemapApp')
   .controller('AdminUserCtrl', function ($scope, Auth, User) {
     	//var User = $resource('/api/users');
     	//$scope.roles = new Array();
+    
     	function init(){
     		
 	    	$scope.userRoles = [
@@ -11,7 +12,13 @@ angular.module('placemapApp')
 	    		'user'
 	    	];
 	    	
+
     		User.query(Auth.getCurrentUser(), function(result){
+	    		
+
+	    		for(var i=0; i<result.length; i++){
+	    			//$scope.edit_modes[result[i]._id]=false;
+	    		}
 	    		$scope.users = result;
 	    		console.log(result);
     		});
@@ -23,6 +30,10 @@ angular.module('placemapApp')
     	}
     	init();
 
+    	$scope.editMode = function(user){
+    		//console.log(user);
+    	//	$scope.edit_modes[true;
+    	}
     	
 		$scope.btnNewUser = function(){
 			
