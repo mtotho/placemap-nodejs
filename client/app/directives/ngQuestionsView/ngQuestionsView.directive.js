@@ -149,18 +149,18 @@ angular.module('placemapApp')
             r.responses = new Array();
             r.address=new Object();
             r.study_area=$scope.study_area._id;
-
+            console.log($scope.responses);
 
             for(var i=0; i<$scope.responses.length; i++){
                 
                 var tempR = new Object();
                 tempR.text = $scope.responses[i].text;
-                tempR.opts = new Array();
+                tempR.opts =  $scope.responses[i].opts;
                 tempR.question= $scope.responses[i].question;
 
-                for(var key in $scope.responses[i].opts){
-                    tempR.opts.push(key);
-                }
+               //for(var key in $scope.responses[i].opts){
+                   // tempR.opts[key]=true;
+              //  }
 
 
                 r.responses.push(tempR);

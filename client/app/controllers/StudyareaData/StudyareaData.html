@@ -12,11 +12,53 @@
 	</div>			
 	<div class="clearfix"></div>
 </div>
+<div id="sa_filters">
+
+	
+
+		<div class="col-md-1">
+			<p class="row_label">Filter By:</p>
+	 	</div>
+
+		<div class="col-md-3">
+	 		
+			<label>Rating 
+				<select name="question_set" ng-model="filters.icon" ng-change='filterChange()' class="form-control" ng-options="r.value as r.name for r in ratings">
+					<option value="">All</option> 				
+				</select>
+			</label>
+
+		</div>
+		<div class="col-md-4">
+			
+			<div ng-repeat="q in studyarea.default_audit_type.questions">
+
+				<div ng-show="q.question.question_type=='check'">
+					<div ng-repeat="chk in q.question.opts">
+						
+						<label>
+		    				<input   ng-change='filterChange()' type="checkbox" name="locationType" ng-model="filters.responses[$parent.$index].opts[chk.option_text]" value="{{chk.option_text}}">
+		    				{{chk.option_text}}
+		    			</label>
+
+
+					</div>
+				</div>
+
+			</div>
+
+		</div>	
+		<div class="col-md-4">
+			
+		</div>
+		<div class="clearfix"></div>
+		
+</div>
 <div id="sa_data">
 
 	<div class="container">
 
-		<div ng-repeat="r in studyarea.responses" class="row sa_data_row">
+		<div ng-repeat="r in studyarea.responses | filter: filters" class="row sa_data_row">
 			
 
 			<div class="row upper_row">

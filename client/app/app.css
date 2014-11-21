@@ -591,6 +591,18 @@ table th{
 }
 
 /* Study Area Data */
+#sa_filters{
+    background-color:white;
+    padding:2em 0 2em 0;
+    border-bottom:1px solid #e8e8e8;
+}
+#sa_filters .row_label{
+    font-weight:bold;
+}
+#sa_filters .row{
+      margin-left:0;
+    margin-right:0;
+}
 #sa_data{
     padding:2em 0 0 0;
 

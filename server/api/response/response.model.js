@@ -15,7 +15,7 @@ var ResponseSchema = new Schema({
   responses:[
   	{	
       text:String,
-      opts:[String],
+      opts:Schema.Types.Mixed,
   		question:{type: Schema.ObjectId, ref:'Question'}
   	}
   ],
