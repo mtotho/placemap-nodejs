@@ -14,13 +14,34 @@
 </div>
 <div id="sa_data">
 
-	<div ng-repeat="r in studyarea.responses" class="row">
-		
+	<div class="container">
 
-		<div class="col-md-2">
+		<div ng-repeat="r in studyarea.responses" class="row sa_data_row">
+			
 
-			{{r.icon}}
+			<div class="row upper_row">
+				<div class="col-md-2 col">
+
+					{{r.lat}}
+				</div>
+				<div class="col-md-8 col">
+
+					
+				</div>
+				<div class="col-md-2 col date">
+
+					<span class="glyphicon glyphicon-time"></span>&nbsp;<span class="col_data">{{r.timestamp |date:"MM/dd/yyyy 'at' h:mma"}}</span>
+				</div>
+			</div>
+
+			<div class="row lower_row">
+				<div class="col-md-3 col address">
+
+					<!--<span class='col_label'>Where</span>&nbsp;&nbsp;--><span class='col_data'>{{r.address.address_components[0].short_name}} {{r.address.address_components[1].short_name}}</span>
+				</div>
+			</div>
+
+
 		</div>
 	</div>
-
 </div>

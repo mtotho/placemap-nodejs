@@ -589,3 +589,49 @@ table th{
     color:white;
     font-size:1.5em;
 }
+
+/* Study Area Data */
+#sa_data{
+    padding:2em 0 0 0;
+
+}
+
+#sa_data .sa_data_row{
+     padding:1em 0 1em 0;
+    background-color:#E8E8E8;
+    border-bottom:1px solid black;
+    margin-bottom:1em;
+}
+#sa_data .col_label{
+    font-weight:bold;
+}
+#sa_data .col_data{
+     font-weight:bold;
+}
+
+
+#sa_data .sa_data_row .date{
+    font-size:0.9em;
+}
+
+
+#sa_data .row{
+    margin-left:0;
+    margin-right:0;
+}
+#sa_data .sa_data_row:nth-child(2n+1){
+   
+}
+#sa_data .sa_data_row .col{
+
+}
+/*
+#sa_data .green{
+    background-color:#0B9815;
+}
+#sa_data .red{
+    background-color:#C30D0D;
+}
+#sa_data .yellow{
+    background-color:#D9C808;
+}*/

@@ -15,14 +15,14 @@ exports.index = function(req, res) {
        Studyarea.find(function (err, studyareas) {
         if(err) { return handleError(res, err); }
         return res.json(200, studyareas);
-      }).populate('default_audit_type').populate('default_audit_type.questions.question').exec();
+      }).populate('responses default_audit_type').exec();
 
   //filter by is_public field
   }else{
       Studyarea.find({"is_public":req.param('is_public')}, function (err, studyareas) {
         if(err) { return handleError(res, err); }
         return res.json(200, studyareas);
-      }).populate('default_audit_type').exec();
+      }).populate('responses default_audit_type').exec();
     }
 
 };
@@ -33,9 +33,11 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!studyarea) { return res.send(404); }
   
-  }).populate('responses').populate('default_audit_type').exec(function(err,data){
+  }).populate('responses default_audit_type').exec(function(err,data){
 
     if (err) return handleError(err);
+    //res.json(data);
+
     //populate sub sub document 'question'
     var options = {
       path: 'default_audit_type.questions.question',
@@ -43,9 +45,24 @@ exports.show = function(req, res) {
     };
 
     Question.populate(data, options, function (err, sa) {
-      res.json(sa);
-    });
+     
+        var options = {
+          path: 'responses.responses.question',
+          model: 'Question'
+        };
 
+       Question.populate(sa, options, function (err, sa2) {
+          res.json(sa);
+       });
+    });
+     /*var options = {
+      path: 'responses.responses.question',
+      model: 'Question'
+    };
+
+    Question.populate(data, options, function (err, sa) {
+      
+    });*/
   });
 };
 

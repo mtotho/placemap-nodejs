@@ -174,13 +174,13 @@ angular.module('placemapApp')
                 r.address.address_components=result[0].address_components;
                 r.address.formatted_address=result[0].formatted_address;
 
-                if(window.debug)console.log("===Marker Post===");
+                if(window.debug)console.log("===Marker Post==="); 
                 if(window.debug)console.log(r);
                 if(window.debug)console.log(" ");
 
 
                 r.$save(function(result){
-                   // console.log(result);
+                    console.log(result);
                     $scope.study_area.responses.push(result);
                     StudyAreaMap.loadResponse(result);
                     $scope.qvopen=false;
