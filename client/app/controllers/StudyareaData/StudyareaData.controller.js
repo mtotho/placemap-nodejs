@@ -33,6 +33,16 @@ angular.module('placemapApp')
 	}
 	init();
 
+	$scope.checkChange = function(question_index, question, chk){
+		console.log(question_index);
+		//console.log(question.option_text);
+		console.log(chk.option_text);
+		//console.log($scope.filters.responses[question_index].opts[chk.option_text]);
+		if($scope.filters.responses[question_index].opts[chk.option_text]==false){
+			delete $scope.filters.responses;//.opts[chk.option_text];
+		}
+		console.log($scope.filters.responses);
+	}
 	$scope.filterChange = function(){
 		
 		//remove icon filter if icon is null

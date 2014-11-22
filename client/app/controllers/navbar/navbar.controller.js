@@ -38,15 +38,21 @@ angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $locati
 					$("header .nav li:nth-child(2)").addClass("active");
 
 					break;
+				}		
+				case "placemaking":{
+					$("header .nav li:nth-child(3)").addClass("active");
+
+					break;
 				}
 				case "login":{
 						
-					$("header .nav li:nth-child(3)").addClass("active");
+					$("header .nav li:nth-child(4)").addClass("active");
 					break;
 				}
+
 				case "admin":{
 					$scope.userNavText="Logout";
-					$("header .nav li:nth-child(4)").addClass("active");
+					$("header .nav li:nth-child(5)").addClass("active");
 
 					break;
 				}
