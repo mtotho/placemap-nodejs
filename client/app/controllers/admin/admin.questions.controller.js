@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminQuestionCtrl', function ($scope, $resource) {
+  .controller('AdminQuestionCtrl', function ($scope, $rootScope, $resource) {
     
-  		var AuditType = $resource('/api/audit_types');
+  		var AuditType = $resource($rootScope.basePath+'api/audit_types');
   		$scope.question_sets = new Array();
       $scope.edit_mode = false;
       $scope.edit_question_id = -1;

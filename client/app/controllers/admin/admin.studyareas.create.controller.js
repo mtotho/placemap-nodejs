@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminSACreateCtrl', function ($scope, GMap, $state, $resource,userStorage) {
+  .controller('AdminSACreateCtrl', function ($scope, GMap, $state, $rootScope, $resource,userStorage) {
     	
-  		var StudyArea = $resource('/api/studyareas');
-  		var AuditType = $resource('/api/audit_types');
+  		var StudyArea = $resource($rootScope.basePath+'api/studyareas');
+  		var AuditType = $resource($rootScope.basePath+'api/audit_types');
   		
   		var storage = userStorage.model.admin.studyareas.create;
  

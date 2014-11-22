@@ -45,6 +45,9 @@ angular.module('placemapApp', [
       }
     };
   }).run(function ($rootScope, $state, Auth, $cookieStore,userStorage) {
+      $rootScope.basePath = $("#linkBasePath").attr('href');
+      console.log($rootScope.basePath);
+
     //console.log(is_state_restored);
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
         

@@ -3,7 +3,7 @@
 angular.module('placemapApp')
   .controller('StudyareaCtrl', function ($scope, GMap, $resource, $timeout, $stateParams, StudyAreaMap, $rootScope) {
 	    var sa_id = $stateParams.studyarea_id;
-	 	var StudyArea = $resource('/api/studyareas/'+sa_id);
+	 	var StudyArea = $resource($rootScope.basePath+'api/studyareas/'+sa_id);
 
 	 	var selectedMarker;
 	 	var draggableSet = false;

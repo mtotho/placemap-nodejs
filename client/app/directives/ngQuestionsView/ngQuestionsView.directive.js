@@ -25,7 +25,7 @@ angular.module('placemapApp')
             // do something...
         })
       },
-      controller:function($scope, $resource, StudyAreaMap){
+      controller:function($scope, $resource,$rootScope, StudyAreaMap){
   		
         $scope.qindex = 0;
         $scope.curQuestion;
@@ -34,7 +34,7 @@ angular.module('placemapApp')
         $scope.qcount;
         $scope.responses = new Array();
 
-        var Response = $resource('/api/responses');
+        var Response = $resource($rootScope.basePath+'api/responses');
 
     	function init(){
 

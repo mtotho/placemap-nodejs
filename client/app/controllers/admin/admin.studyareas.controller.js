@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminSACtrl', function ($scope, $resource,Studyarea) {
+  .controller('AdminSACtrl', function ($scope, $resource,$rootScope, Studyarea) {
     
   	//var StudyArea = $resource('/api/studyareas');
-  		var AuditType = $resource('/api/audit_types');
+  		var AuditType = $resource($rootScope.basePath+'api/audit_types');
 
 
   		function init(){
@@ -34,7 +34,7 @@ angular.module('placemapApp')
   .controller('AdminSAWatchCtrl', function ($scope, $resource,Studyarea) {
     
     //var rStudyArea = $resource('/api/studyareas');
-      var AuditType = $resource('/api/audit_types');
+      var AuditType = $resource($rootScope.basePath+'api/audit_types');
 
 
       function init(){

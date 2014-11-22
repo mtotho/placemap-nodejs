@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('placemapApp')
-  .factory('Studyarea', function ($resource) {
+  .factory('Studyarea', function ($resource, $rootScope) {
     // Service logic
     // ...
-     return $resource('/api/studyareas/:id',{id: '@_id'},
+     return $resource($rootScope.basePath+'api/studyareas/:id',{id: '@_id'},
     {
       update: {
         method: 'PUT'

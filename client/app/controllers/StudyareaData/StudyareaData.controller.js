@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareadataCtrl', function ($scope, $resource, $stateParams) {
+  .controller('StudyareadataCtrl', function ($scope, $resource, $rootScope, $stateParams) {
 	var sa_id = $stateParams.studyarea_id;
-	var StudyArea = $resource('/api/studyareas/'+sa_id);
+	var StudyArea = $resource($rootScope.basePath+'api/studyareas/'+sa_id);
     $scope.ratings = [
     	{
     		'name':'Detracts',
