@@ -5,7 +5,7 @@ var Studyarea = require('./studyarea.model');
 var AuditType = require('../audit_type/audit_type.model');
 var Question = require('../question/question.model');
 var Response = require('../response/response.model');
-var async  = require('async');
+//var async  = require('async');
 // Get list of studyareas
 exports.index = function(req, res) {
 
