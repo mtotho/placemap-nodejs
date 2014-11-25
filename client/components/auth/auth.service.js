@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .factory('Auth', function Auth($location, $http, API, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $http, API, apiroot, $cookieStore, $q) {
     var currentUser = {};
     if($cookieStore.get('token')) {
 

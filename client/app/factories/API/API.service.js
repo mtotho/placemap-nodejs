@@ -11,16 +11,16 @@ angular.module('placemapApp')
                     update: {method: 'PUT'}
                  }),
 
-      AuditType:$resource(apiroot+'api/audit_types/:id',{id: '@_id'},{
+      AuditType:$resource(apiroot+'audit_types/:id',{id: '@_id'},{
                     update: {method: 'PUT'}
                 }),
       
-      Response:$resource(apiroot+'api/responses'),
+      Response:$resource(apiroot+'responses'),
 
-      Question:$resource(apiroot+'api/questions'),
+      Question:$resource(apiroot+'questions'),
 
       //consolidated from yeoman generated user service
-      User:$resource(apiroot+'api/users/:id/:controller', {id: '@_id'}, {
+      User:$resource(apiroot+'users/:id/:controller', {id: '@_id'}, {
                   changePassword: {
                     method: 'PUT',
                     params: {
