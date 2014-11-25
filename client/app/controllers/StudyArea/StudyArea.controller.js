@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareaCtrl', function ($scope, GMap, $resource, $timeout, $stateParams, StudyAreaMap) {
+  .controller('StudyareaCtrl', function ($scope, GMap, $resource, $timeout,$rootScope, $stateParams, StudyAreaMap) {
 	    var sa_id = $stateParams.studyarea_id;
 	 	var StudyArea = $resource('api/studyareas/'+sa_id);
 

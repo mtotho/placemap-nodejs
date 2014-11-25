@@ -11,6 +11,7 @@ angular.module('placemapApp', [
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
      .otherwise('/');
+     console.log(window.location.host);
     //$cookieStore.put("state_restored","false");
     //$browser.baseHref = function() { return "/" };
   // is_state_restored = "derp";
