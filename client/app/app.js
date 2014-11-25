@@ -21,7 +21,7 @@ angular.module('placemapApp', [
         var url=window.location.href;              //http://localhost:9000/admin/studyareas/create 
         var base_url = url.split("placemap")[0]; //http://localhost:9000/admin/ 
      //   console.log(base_url.split(location.host));
-        var root_path = base_url.split(location.host)[1] + 'placemap/';
+        root_path = base_url.split(location.host)[1] + 'placemap/';
 
         
       

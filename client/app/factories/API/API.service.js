@@ -3,7 +3,8 @@
 angular.module('placemapApp')
   .factory('API', function ($resource, apiroot) {
     // Service logic
- 
+    console.log("derping");
+    console.log(apiroot);
     // Public API here
     return {
 
