@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareadataCtrl', function ($scope, $resource, $stateParams) {
+  .controller('StudyareadataCtrl', function ($scope, API, $stateParams) {
 	var sa_id = $stateParams.studyarea_id;
-	var StudyArea = $resource('api/studyareas/'+sa_id);
+	
     $scope.ratings = [
     	{
     		'name':'Detracts',
@@ -23,7 +23,7 @@ angular.module('placemapApp')
   // $scope.filters.icon = new Array();
 
 	function init(){
-	 	StudyArea.get(function(result){
+	 	API.Studyarea.get({id:sa_id},function(result){
     		$scope.studyarea=result;
     		console.log("====Study Area Data====");
     		console.log(result);

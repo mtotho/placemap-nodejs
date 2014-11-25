@@ -2,16 +2,34 @@
 
 var is_state_restored = false;
 
+
+ var root_path="/";
+
+ if(location.host.split(":")[0]!='localhost'){
+    var url=window.location.href;              //http://localhost:9000/admin/studyareas/create 
+    var base_url = url.split("studyareas")[0]; //http://localhost:9000/admin/ 
+ //   console.log(base_url.split(location.host));
+    var root_path = base_url.split(location.host)[1] + 'placemap/';
+
+    
+  
+}
+    
+ console.log(root_path);
+
+
+
 angular.module('placemapApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ui.router'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider) {
     $urlRouterProvider
      .otherwise('/');
-     console.log(window.location.host);
+
+     $provide.value("apiroot", root_path);
     //$cookieStore.put("state_restored","false");
     //$browser.baseHref = function() { return "/" };
   // is_state_restored = "derp";

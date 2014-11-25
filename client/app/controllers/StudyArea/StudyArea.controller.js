@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareaCtrl', function ($scope, GMap, $resource, $timeout,$rootScope, $stateParams, StudyAreaMap) {
+  .controller('StudyareaCtrl', function ($scope, GMap,API, $timeout,$rootScope, $stateParams, StudyAreaMap) {
 	    var sa_id = $stateParams.studyarea_id;
-	 	var StudyArea = $resource('api/studyareas/'+sa_id);
+	 	//var StudyArea = $resource('api/studyareas/'+sa_id);
 
 	 	var selectedMarker;
 	 	var draggableSet = false;
@@ -24,7 +24,7 @@ angular.module('placemapApp')
 
 
 
-	    	StudyArea.get(function(result){
+	    	API.Studyarea.get({id:sa_id},function(result){
 	    		$scope.studyarea=result;
 	    		console.log(result);
 	    		//console.log("derp");

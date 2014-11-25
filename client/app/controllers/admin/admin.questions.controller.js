@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminQuestionCtrl', function ($scope, $rootScope, $resource) {
+  .controller('AdminQuestionCtrl', function ($scope, $rootScope, API) {
     
-  		var AuditType = $resource('api/audit_types');
+  		//var AuditType = $resource('api/audit_types');
   		$scope.question_sets = new Array();
       $scope.edit_mode = false;
       $scope.edit_question_id = -1;
 
   		function init(){
 
-  			AuditType.query(function(result){
+  			API.AuditType.query(function(result){
   				$scope.question_sets=result;
           console.log(result);
   			});
@@ -38,7 +38,7 @@ angular.module('placemapApp')
   		$scope.createQuestionSet=function(form){
 	      	if(form.$valid) {
 
-	      		var qs = new AuditType();
+	      		var qs = new API.AuditType();
 	      		qs.name=$scope.newQS;
 
 	      		qs.$save(function(result){

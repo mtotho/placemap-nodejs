@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminSACtrl', function ($scope, $resource, Studyarea) {
+  .controller('AdminSACtrl', function ($scope,API) {
     
   	//var StudyArea = $resource('/api/studyareas');
-  		var AuditType = $resource('api/audit_types');
+  	//	var AuditType = $resource('api/audit_types');
 
 
   		function init(){
 
 
-  			AuditType.query(function(result){
+  			API.AuditType.query(function(result){
   				$scope.question_sets=result;
   			});
 
-  		  Studyarea.query(function(results){
+  		  API.Studyarea.query(function(results){
   				$scope.studyareas=results;
   				console.log(results);
   			})
@@ -31,10 +31,10 @@ angular.module('placemapApp')
   });
 
 angular.module('placemapApp')
-  .controller('AdminSAWatchCtrl', function ($scope,$resource,Studyarea) {
+  .controller('AdminSAWatchCtrl', function ($scope,API) {
     
     //var rStudyArea = $resource('/api/studyareas');
-      var AuditType = $resource('api/audit_types');
+      //var AuditType = $resource('api/audit_types');
 
 
       function init(){
@@ -64,7 +64,9 @@ angular.module('placemapApp')
       }
 
       function updateStudyarea(){
-        Studyarea.update($scope.sa, function(result){
+        console.log("===UPDATE STUDY AREA====");
+        console.log($scope.sa);
+        API.Studyarea.update($scope.sa, function(result){
           console.log(result);
         });
       }

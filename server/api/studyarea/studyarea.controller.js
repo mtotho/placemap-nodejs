@@ -78,10 +78,19 @@ exports.create = function(req, res) {
 
 // Updates an existing studyarea in the DB.
 exports.update = function(req, res) {
+ // console.log(req.body);
   if(req.body._id) { delete req.body._id; }
   Studyarea.findById(req.params.id, function (err, studyarea) {
+   // console.log(err);
     if (err) { return handleError(res, err); }
     if(!studyarea) { return res.send(404); }
+
+    //pull the response object out and replace with response id so it merges nicely
+    for(var i=0; i<req.body.responses.length; i++){
+       if(req.body.responses[i]._id!=null){
+          req.body.responses[i]=req.body.responses[i]._id;
+        }
+    }
 
     if(req.body.default_audit_type._id!=null){
       req.body.default_audit_type=req.body.default_audit_type._id;
@@ -90,7 +99,8 @@ exports.update = function(req, res) {
 
     var updated = _.merge(studyarea, req.body);
     updated.save(function (err) {
-      if (err) { return handleError(res, err); }
+      if (err) { console.log(err); return handleError(res, err); }
+
       return res.json(200, studyarea);
     });
   });

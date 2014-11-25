@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminUserCtrl', function ($scope, Auth, User) {
+  .controller('AdminUserCtrl', function ($scope, Auth, API) {
     	//var User = $resource('/api/users');
     	//$scope.roles = new Array();
     
@@ -13,7 +13,7 @@ angular.module('placemapApp')
 	    	];
 	    	
 
-    		User.query(Auth.getCurrentUser(), function(result){
+    		API.User.query(Auth.getCurrentUser(), function(result){
 	    		
 
 	    		for(var i=0; i<result.length; i++){

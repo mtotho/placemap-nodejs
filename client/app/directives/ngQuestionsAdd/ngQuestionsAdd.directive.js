@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .directive('ngQuestionsAdd', function (AuditType) {
+  .directive('ngQuestionsAdd', function () {
     return {
       templateUrl: 'app/directives/ngQuestionsAdd/ngQuestionsAdd.html',
       restrict: 'EA',
@@ -22,7 +22,7 @@ angular.module('placemapApp')
             // do something...
         });
       },
-      controller: function($scope, $resource){
+      controller: function($scope, API){
   	
       	function init(){
       	
@@ -79,11 +79,11 @@ angular.module('placemapApp')
     	//Submit question to db
     	$scope.btnSubmit = function(){
 			//var AuditType = $resource('/api/audit_types/'+$scope.question_set._id);
-			var Question = $resource('api/questions');
+		//var Question = $resource('api/questions');
 
     		var tempQuestion = $scope.tempQuestion;
 
-    		var q = new Question();
+    		var q = new API.Question();
 
     		q.question_text=$scope.tempQuestion.question_text;
     		q.question_type=$scope.tempQuestion.question_type;

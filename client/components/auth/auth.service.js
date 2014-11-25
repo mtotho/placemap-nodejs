@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('placemapApp')
-  .factory('Auth', function Auth($location, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $http, API, $cookieStore, $q) {
     var currentUser = {};
     if($cookieStore.get('token')) {
 
-      currentUser = User.get();
+      currentUser = API.User.get();
 
     }
 
@@ -28,7 +28,7 @@ angular.module('placemapApp')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
+          currentUser = API.User.get();
           deferred.resolve(data);
           return cb();
         }).
@@ -61,7 +61,7 @@ angular.module('placemapApp')
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
 
-        return User.save(user,
+        return API.User.save(user,
           function(data) {
             //$cookieStore.put('token', data.token);
           //  currentUser = User.get();
@@ -84,7 +84,7 @@ angular.module('placemapApp')
       changePassword: function(oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.changePassword({ id: currentUser._id }, {
+        return API.User.changePassword({ id: currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
         }, function(user) {
