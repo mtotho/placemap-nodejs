@@ -37,7 +37,7 @@
 					<div ng-repeat="chk in q.question.opts">
 						
 						<label>
-		    				<input   ng-change='checkChange($parent.$index,q, chk)' type="checkbox" name="locationType" ng-model="filters.responses[$parent.$index].opts[chk.option_text]" value="{{chk.option_text}}">
+		    				<input ng-change='checkChange($parent.$index,q, chk)' type="checkbox" name="locationType" ng-model="filters.responses[$parent.$index].opts[chk.option_text]" value="false" ng-init="filters.responses[$parent.$index].opts[chk.option_text]=true">
 		    				{{chk.option_text}}
 		    			</label>
 

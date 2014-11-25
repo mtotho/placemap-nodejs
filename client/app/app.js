@@ -12,7 +12,7 @@ angular.module('placemapApp', [
     $urlRouterProvider
      .otherwise('/');
     //$cookieStore.put("state_restored","false");
-    
+    //$browser.baseHref = function() { return "/" };
   // is_state_restored = "derp";
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -45,8 +45,8 @@ angular.module('placemapApp', [
       }
     };
   }).run(function ($rootScope, $state, Auth, $cookieStore,userStorage) {
-      $rootScope.basePath = $("#linkBasePath").attr('href');
-      console.log($rootScope.basePath);
+     // $rootScope.basePath = $("#linkBasePath").attr('href');
+
 
     //console.log(is_state_restored);
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){

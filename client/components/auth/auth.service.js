@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+  .factory('Auth', function Auth($location, $http, User, $cookieStore, $q) {
     var currentUser = {};
     if($cookieStore.get('token')) {
 
@@ -22,7 +22,7 @@ angular.module('placemapApp')
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
-        $http.post($rootScope.basePath+'auth/local', {
+        $http.post('auth/local', {
           email: user.email,
           password: user.password
         }).

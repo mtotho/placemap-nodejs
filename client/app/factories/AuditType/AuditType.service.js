@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('placemapApp')
-  .factory('AuditType', function ($resource, $rootScope) {
+  .factory('AuditType', function ($resource) {
   
-    return $resource($rootScope.basePath+'api/audit_types/:id',{id: '@_id'},
+    return $resource('api/audit_types/:id',{id: '@_id'},
     {
       update: {
         method: 'PUT'

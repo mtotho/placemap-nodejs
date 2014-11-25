@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareadataCtrl', function ($scope, $resource, $rootScope, $stateParams) {
+  .controller('StudyareadataCtrl', function ($scope, $resource, $stateParams) {
 	var sa_id = $stateParams.studyarea_id;
-	var StudyArea = $resource($rootScope.basePath+'api/studyareas/'+sa_id);
+	var StudyArea = $resource('api/studyareas/'+sa_id);
     $scope.ratings = [
     	{
     		'name':'Detracts',
@@ -39,9 +39,10 @@ angular.module('placemapApp')
 		console.log(chk.option_text);
 		//console.log($scope.filters.responses[question_index].opts[chk.option_text]);
 		if($scope.filters.responses[question_index].opts[chk.option_text]==false){
-			delete $scope.filters.responses;//.opts[chk.option_text];
+			delete $scope.filters.responses[question_index].opts[chk.option_text];
 		}
-		console.log($scope.filters.responses);
+		delete $scope.filters.responses[2];
+		console.log($scope.filters);
 	}
 	$scope.filterChange = function(){
 		
@@ -49,7 +50,8 @@ angular.module('placemapApp')
 		if($scope.filters.icon==null){
 			delete $scope.filters["icon"]; 
 		}
-		var truect;
+		
+		/*var truect;
 		for(var index in $scope.filters.responses){
 			console.log(index);
 			for(var key in $scope.filters.responses[index].opts){
@@ -66,7 +68,7 @@ angular.module('placemapApp')
 		}
 		
 		console.log($scope.filters);
-		
+		*/
 	}
 
 

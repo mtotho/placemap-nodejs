@@ -22,7 +22,7 @@ angular.module('placemapApp')
             // do something...
         });
       },
-      controller: function($scope, $resource, $rootScope){
+      controller: function($scope, $resource){
   	
       	function init(){
       	
@@ -79,7 +79,7 @@ angular.module('placemapApp')
     	//Submit question to db
     	$scope.btnSubmit = function(){
 			//var AuditType = $resource('/api/audit_types/'+$scope.question_set._id);
-			var Question = $resource($rootScope.basePath+'api/questions');
+			var Question = $resource('api/questions');
 
     		var tempQuestion = $scope.tempQuestion;
 
