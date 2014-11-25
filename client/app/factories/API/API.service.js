@@ -3,25 +3,25 @@
 angular.module('placemapApp')
   .factory('API', function ($resource, apiroot) {
     // Service logic
-    console.log("derping");
-    console.log(apiroot);
+   // console.log("derping");
+  //  console.log(apiroot);
     // Public API here
     return {
 
-      Studyarea:$resource(apiroot+'studyareas/:id',{id: '@_id'},{
+      Studyarea:$resource('api/studyareas/:id',{id: '@_id'},{
                     update: {method: 'PUT'}
                  }),
 
-      AuditType:$resource(apiroot+'audit_types/:id',{id: '@_id'},{
+      AuditType:$resource('api/audit_types/:id',{id: '@_id'},{
                     update: {method: 'PUT'}
                 }),
       
-      Response:$resource(apiroot+'responses'),
+      Response:$resource('api/responses'),
 
-      Question:$resource(apiroot+'questions'),
+      Question:$resource('api/questions'),
 
       //consolidated from yeoman generated user service
-      User:$resource(apiroot+'users/:id/:controller', {id: '@_id'}, {
+      User:$resource('api/users/:id/:controller', {id: '@_id'}, {
                   changePassword: {
                     method: 'PUT',
                     params: {
