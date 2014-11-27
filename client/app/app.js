@@ -10,13 +10,19 @@ angular.module('placemapApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ui.router'
+  'ui.router',
+  'uiGmapgoogle-maps'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider,uiGmapGoogleMapApiProvider) {
     $urlRouterProvider
      .otherwise('/');
       var root_path="/";
-
+      uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyAHDR09KWWgVoyFCoavaoHm2cCAHX5VL2',
+        v: '3.17',
+        libraries: 'weather,geometry,visualization,places'
+    });
+/*
      if(location.host.split(":")[0]!='localhost'){
         var url=window.location.href;              //http://localhost:9000/admin/studyareas/create 
         var base_url = url.split("placemap")[0]; //http://localhost:9000/admin/ 
@@ -25,7 +31,7 @@ angular.module('placemapApp', [
 
         
       
-    }
+    }*/
         
      console.log(root_path);
 

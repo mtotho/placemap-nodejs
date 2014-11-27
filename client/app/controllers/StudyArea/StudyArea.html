@@ -16,8 +16,36 @@
 	<!--<div class="col-md-9 col-left"> -->
 	<!--	<div id="ui_handle"></div>-->
 
-		<div id="map_canvas" class="map_div" ></div>
-	   
+		<!--<div id="map_canvas" class="map_div" ></div>-->
+		<ui-gmap-google-map center='map.center' id="map_canvas" zoom='map.zoom'>
+		
+			 <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id"></ui-gmap-marker>
+			<!--  <ui-gmap-markers
+	             models='{expression}'
+	             idKey='{expression}'
+	             doRebuildAll="{string or object}"
+
+	             doCluster="{string or object}"
+	             clusterOptions='{expression}'
+	             fit="{string or object}"
+
+	             labelContent='{expression}'
+
+	             coords="'{string}'"
+	             icon="'{string}'"
+	             options="'{string}'"
+	             labelContent="'{string}'"
+	             labelAnchor="'{string}'"
+	             labelClass="'{string}'"
+	             click="'{string or expression to a function}'"
+
+	             events="{expression}"
+	             control='{expression}'
+	            >
+    		</ui-gmap-markers>-->
+    		<ui-gmap-markers models="responseMarkers" coords="'self'" events='events.responseMarker' icon="'icon'">
+		</ui-gmap-google-map>
+	   	
 	
 			
 		

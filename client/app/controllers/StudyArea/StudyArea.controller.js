@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareaCtrl', function ($scope, GMap,API, $timeout,$rootScope, $stateParams, StudyAreaMap) {
+  .controller('StudyareaCtrl', function ($scope, GMap,API, $timeout,$rootScope, $stateParams, StudyAreaMap, uiGmapGoogleMapApi) {
 	    var sa_id = $stateParams.studyarea_id;
 	 	//var StudyArea = $resource('api/studyareas/'+sa_id);
 
@@ -14,7 +14,8 @@ angular.module('placemapApp')
     	$scope.qvopen = false; //initialize marker response (question view) panel to closed
     	$scope.marker;
     	$scope.selectedMarker;
-
+    	$scope.map = new Object();
+    	$scope.responseMarkers = [];
 	    function init(){
 
 	    	//make the rate select button disabled. This is disabled until rating is selected
@@ -26,17 +27,59 @@ angular.module('placemapApp')
 
 	    	API.Studyarea.get({id:sa_id},function(result){
 	    		$scope.studyarea=result;
-	    		console.log(result);
+	    		//$scope.	
+
+	    		var markerArray= new Array();
+	    		for(var i=0; i<result.responses.length; i++){
+	    			var res = result.responses[i];
+	    			var m ={
+		    				latitude: res.lat,
+		    				longitude: res.lng,
+		    				id:res._id,
+		    				title:'derp'
+	    				}
+
+	    		
+
+	    			markerArray.push(m);
+	    		}
+	    		$scope.responseMarkers=markerArray;
+
+	    		
+	    		uiGmapGoogleMapApi.then(function(maps) {
+
+	    		 	$scope.map = { 
+		    			center: 
+		    				{ 
+		    					latitude: result.lat, longitude: result.lng 
+		    				}, 
+	    				zoom: result.default_zoom
+	    			};
+
+	    			console.log(maps);
+
+   				 });
+	    		
 	    		//console.log("derp");
-    			StudyAreaMap.init(result);
+    			//StudyAreaMap.init(result);
 
     			//StudyAreaMap.setRatingMode(false);
-				$scope.setRatingMode(false);
-	    		map_resize2();
-    			GMap.checkResize();
+			//	$scope.setRatingMode(false);
+	    		//map_resize2();
+    			//GMap.checkResize();
 	    		//initListeners();
 
 	    	});
+
+	    	$scope.events={
+	    		responseMarker:{
+	    			click:function(marker){
+	    				    $rootScope.$apply(function () {
+			                    console.log(marker);
+                 		 	});
+	    			}//end click
+	    		}
+	    	}
 
 	    	//Initialize Bootstrap objects
 			$('.collapse').collapse({
@@ -56,6 +99,18 @@ angular.module('placemapApp')
 	    }
 	    init();
     	
+
+
+		$scope.$on('$viewContentLoaded', function () {
+			var headerheight=$("header").outerHeight();
+			var info_height=$("#info_area").outerHeight();
+			var windowheight=$(window).outerHeight();
+
+			var targetheight = windowheight - (headerheight + info_height);
+		
+			$("#map_canvas .angular-google-map-container").height(targetheight);
+	       
+	    });
     	$rootScope.$on("response_click", function(){
     		
     		var selected = StudyAreaMap.getSelectedResponse();
@@ -83,6 +138,8 @@ angular.module('placemapApp')
 		//}
     	});
 	    
+    
+
 	    $scope.setRatingMode = function(bool){
 	    	$scope.ratingModeEnabled=bool;
 	    	StudyAreaMap.setRatingMode(bool);
@@ -196,8 +253,8 @@ function map_resize2(){
 	  var windowheight=$(window).outerHeight();
 
 	  var targetheight = windowheight - (headerheight + info_height);
-
-	$("#map_canvas").height(targetheight);
+	  console.log(targetheight);
+	$("#map_canvas .angular-google-map-container").css('height',targetheight+'px');
 }
 
 $(window).resize(function(){
