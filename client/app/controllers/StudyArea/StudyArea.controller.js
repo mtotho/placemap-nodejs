@@ -16,51 +16,18 @@ angular.module('placemapApp')
     	$scope.selectedMarker;
     	$scope.map = new Object();
     	$scope.responseMarkers = [];
+
 	    function init(){
 
 	    	//make the rate select button disabled. This is disabled until rating is selected
 	    	$("#btnSelectMarkerLocation").addClass("disabled");
 			$("#btnConfirmLocation").addClass("disabled");
 	    	
-
-
-
 	    	API.Studyarea.get({id:sa_id},function(result){
 	    		$scope.studyarea=result;
-	    		//$scope.	
-
-	    		var markerArray= new Array();
-	    		for(var i=0; i<result.responses.length; i++){
-	    			var res = result.responses[i];
-	    			var m ={
-		    				latitude: res.lat,
-		    				longitude: res.lng,
-		    				id:res._id,
-		    				title:'derp'
-	    				}
-
-	    		
-
-	    			markerArray.push(m);
-	    		}
-	    		$scope.responseMarkers=markerArray;
-
-	    		
-	    		uiGmapGoogleMapApi.then(function(maps) {
-
-	    		 	$scope.map = { 
-		    			center: 
-		    				{ 
-		    					latitude: result.lat, longitude: result.lng 
-		    				}, 
-	    				zoom: result.default_zoom
-	    			};
-
-	    			console.log(maps);
-
-   				 });
-	    		
-	    		//console.log("derp");
+	    		setUpMap(result);
+	    		//Loop over the responses and create map marker models
+	    	
     			//StudyAreaMap.init(result);
 
     			//StudyAreaMap.setRatingMode(false);
@@ -71,15 +38,6 @@ angular.module('placemapApp')
 
 	    	});
 
-	    	$scope.events={
-	    		responseMarker:{
-	    			click:function(marker){
-	    				    $rootScope.$apply(function () {
-			                    console.log(marker);
-                 		 	});
-	    			}//end click
-	    		}
-	    	}
 
 	    	//Initialize Bootstrap objects
 			$('.collapse').collapse({
@@ -98,19 +56,66 @@ angular.module('placemapApp')
 			});
 	    }
 	    init();
-    	
-
-
-		$scope.$on('$viewContentLoaded', function () {
-			var headerheight=$("header").outerHeight();
-			var info_height=$("#info_area").outerHeight();
-			var windowheight=$(window).outerHeight();
-
-			var targetheight = windowheight - (headerheight + info_height);
 		
-			$("#map_canvas .angular-google-map-container").height(targetheight);
+		//set up markers, map center, events, etc
+		function setUpMap(result){
+			//Loop over the responses and create map marker models
+    		for(var i=0; i<result.responses.length; i++){
+    			var res = result.responses[i];
+    			var m ={
+	    				latitude: res.lat,
+	    				longitude: res.lng,
+	    				id:res._id,
+	    				title:'derp'
+    				}
+
+    			$scope.responseMarkers.push(m);
+    		}
+
+    		//Ensure google SDK loaded before using it
+    		uiGmapGoogleMapApi.then(function(maps) {
+
+    			//Define the map object
+    		 	$scope.map = { 
+	    			center: 
+	    				{ 
+	    					latitude:  result.lat, 
+	    					longitude: result.lng 
+	    				}, 
+    				zoom: result.default_zoom,
+
+    			};
+
+
+
+    			//Define all the map events
+		    	$scope.map_events={
+		    		responseMarker:{
+		    			click:function(marker){
+		    				    $rootScope.$apply(function () {
+				                    console.log(marker);
+	                 		 	});
+		    			}//end click
+		    		},//end responseMarker events
+
+		    		map:{
+		    			idle:function(map){
+		    				//console.log(map.getCenter());
+		    			}
+		    		}//end map events
+		    	}//end all events
+		    });
+    		
+
+		}    	
+
+		//dynamically resize map height
+		$scope.$on('$viewContentLoaded', function () {
+			map_resize2();
 	       
 	    });
+
+
     	$rootScope.$on("response_click", function(){
     		
     		var selected = StudyAreaMap.getSelectedResponse();
