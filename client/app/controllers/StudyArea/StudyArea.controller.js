@@ -10,9 +10,7 @@ angular.module('placemapApp')
     
     	$scope.selectedMarker;
     	$scope.map = new Object();
-    	$scope.mapControl = {};
-    	$scope.markerControl = {};
-    	
+    
     	$scope.mapLoaded = false;
     	
 	    function init(){
@@ -55,8 +53,8 @@ angular.module('placemapApp')
     		//Ensure google SDK loaded before using it
     		uiGmapGoogleMapApi.then(function(maps) {
     		
-	    		$scope.studyarea.responseMarkers = [];
 				//Loop over the responses and create map marker models
+				$scope.studyarea.responseMarkers = [];
 	    		for(var i=0; i<result.responses.length; i++){
 	    			var res = result.responses[i];
 	    			var m ={
@@ -100,6 +98,13 @@ angular.module('placemapApp')
 	    				animation:maps.Animation.BOUNCE
 	    			},
 	    			events:{
+	    				drag:function(marker){
+	    					//console.log(marker.getPosition());
+	    					positionTooltip({
+	    						latitude:marker.getPosition().lat(),
+	    						longitude:marker.getPosition().lng()
+	    					});
+	    				},
 	    				//stop the animation when moused over
 	    				mouseover:function(marker,eventName,args){
 	    					if(!this.isClicked)
@@ -135,8 +140,11 @@ angular.module('placemapApp')
 		    		},//end responseMarker events
 
 		    		map:{
+		    			drag:function(map){
+		    				positionTooltip($scope.draggable.coords);
+		    			},
 		    			idle:function(map){
-		    	
+		    				positionTooltip($scope.draggable.coords);
 
 		    			}
 		    		}//end map events
@@ -146,13 +154,10 @@ angular.module('placemapApp')
 		    	ngProgress.complete(); 
 		    });
 
-			//Wait till make is loaded
+			//Wait till make is loaded. Show clustering
     		uiGmapIsReady.promise(1).then(function(instances) {
-		     	//console.log(instances);
 		        instances.forEach(function(inst) {
-		            var map = inst.map;
-		          	GMap.showClustering(map, $scope.map.markersControl.getGMarkers());
-		            //console.log(map);
+		          	GMap.showClustering(inst.map, $scope.map.markersControl.getGMarkers());
 		        });
 		    });
 
@@ -175,7 +180,7 @@ angular.module('placemapApp')
 			if(bool && $scope.mapLoaded){
 
 				$scope.draggable.options.icon=GMap.icons["grey"];
-
+				showToolTip();
 				//set the coords of the draggable to the center of the map
 				$scope.draggable.coords = angular.copy($scope.map.center);
 				$scope.draggable.options.visible=true;
@@ -270,7 +275,37 @@ angular.module('placemapApp')
 	        }
 	    });
 
-    	
+    	function showToolTip(){
+			//if(this.rating_mode){
+				var pos = GMap.getXY($scope.draggable.coords, $scope.map.control.getGMap());
+				$("#draggableTooltip").css("top", pos.y-40);
+				$("#draggableTooltip").css("left", pos.x+15);
+				$("#draggableTooltip").tooltip('show');
+				
+				var tooltipWidth = $('.tooltip').width();
+				$timeout(function(){
+					$("#draggableTooltip").tooltip('hide');
+				}, 4000)
+
+			//}
+		}//end: showToolTip();
+		function hideToolTip(){
+			$("#draggableTooltip").tooltip('hide');
+		}
+		function positionTooltip(coords){
+			//console.log(pos);
+			//console.log($("#draggableTooltip").tooltip());
+			//todo - only do this if tooltip is active
+			var pos = GMap.getXY(coords, $scope.map.control.getGMap());
+			
+			$(".tooltip").css("top",pos.y-40);
+			$(".tooltip").css("left",pos.x+15);
+			
+			
+			if(pos.x<0 || pos.y< 40 || pos.x>(window.innerWidth-$('.tooltip').width()-45) || pos.y>window.innerHeight){
+				$("#draggableTooltip").tooltip("hide");
+			}
+		}//end: positionTooltip()
 
 
   });

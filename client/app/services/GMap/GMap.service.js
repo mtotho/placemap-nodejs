@@ -149,11 +149,12 @@ angular.module('placemapApp')
 		
 		}
 
-		this.getXY = function (latLng) {
-			var topRight = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getNorthEast());
-			var bottomLeft = this.map.getProjection().fromLatLngToPoint(this.map.getBounds().getSouthWest());
-			var scale = Math.pow(2, this.map.getZoom());
-			var worldPoint = this.map.getProjection().fromLatLngToPoint(latLng);
+		this.getXY = function (coords, map) {
+		
+			var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+			var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+			var scale = Math.pow(2, map.getZoom());
+			var worldPoint = map.getProjection().fromLatLngToPoint(new google.maps.LatLng(coords.latitude, coords.longitude));
 			return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
 		}
 		this.setDraggableIcon = function(iconColor){
