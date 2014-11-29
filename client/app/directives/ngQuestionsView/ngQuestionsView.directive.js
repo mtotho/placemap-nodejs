@@ -190,6 +190,7 @@ angular.module('placemapApp')
                             id:result._id,
                             title:'derp',
                             icon:GMap.icons[result.icon],
+                            iconColor:result.icon,
                             responses:result.responses
                     }
                      $scope.study_area.responseMarkers.push(m);
