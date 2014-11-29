@@ -101,7 +101,7 @@ angular.module('placemapApp')
 
 				$scope.question_set.questions.push(newQ);
 
-				AuditType.update($scope.question_set, function(result){
+				API.AuditType.update($scope.question_set, function(result){
 					console.log(result);
 				});
 
