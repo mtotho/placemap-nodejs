@@ -92,7 +92,7 @@ angular.module('placemapApp')
 
         $scope.$watch('study_area',function(study_area){
             if(!angular.isUndefined(study_area)){
-                console.log(study_area);
+            
             	$scope.qcount=study_area.default_audit_type.questions.length;
                 if($scope.qcount>0){
                 	  setQuestion($scope.qindex);

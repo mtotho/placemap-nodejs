@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareaCtrl', function ($scope, GMap, API, $timeout,$rootScope, $stateParams, ngProgress, uiGmapGoogleMapApi) {
+  .controller('StudyareaCtrl', function ($scope, GMap, API, $timeout,$rootScope, $stateParams, ngProgress, uiGmapGoogleMapApi, uiGmapIsReady) {
 	    var sa_id = $stateParams.studyarea_id;
 
 	    var markerZindex=1;
@@ -10,7 +10,8 @@ angular.module('placemapApp')
     
     	$scope.selectedMarker;
     	$scope.map = new Object();
-    
+    	$scope.mapControl = {};
+    	$scope.markerControl = {};
     	
     	$scope.mapLoaded = false;
     	
@@ -50,10 +51,12 @@ angular.module('placemapApp')
 		//set up markers, map center, events, etc
 		function setUpMap(result){
 			console.log(result);
+			
     		//Ensure google SDK loaded before using it
     		uiGmapGoogleMapApi.then(function(maps) {
-    			$scope.studyarea.responseMarkers = [];
-    			//Loop over the responses and create map marker models
+    		
+	    		$scope.studyarea.responseMarkers = [];
+				//Loop over the responses and create map marker models
 	    		for(var i=0; i<result.responses.length; i++){
 	    			var res = result.responses[i];
 	    			var m ={
@@ -69,6 +72,19 @@ angular.module('placemapApp')
 
 	    			$scope.studyarea.responseMarkers.push(m);
 	    		}
+
+				//Define the map object
+			 	$scope.map = { 
+	    			center: 
+	    				{ 
+	    					latitude:  result.lat, 
+	    					longitude: result.lng 
+	    				}, 
+					zoom: result.default_zoom,
+					control:{},
+					markersControl:{}
+
+				};
 
 	    		//define the draggable marker
 	    		$scope.draggable={
@@ -106,16 +122,6 @@ angular.module('placemapApp')
 	    			
 	    		}
 
-    			//Define the map object
-    		 	$scope.map = { 
-	    			center: 
-	    				{ 
-	    					latitude:  result.lat, 
-	    					longitude: result.lng 
-	    				}, 
-    				zoom: result.default_zoom,
-
-    			};
 
     			//Define all the map events
 		    	$scope.map_events={
@@ -130,7 +136,7 @@ angular.module('placemapApp')
 
 		    		map:{
 		    			idle:function(map){
-		    				//console.log(map.getCenter());
+		    	
 
 		    			}
 		    		}//end map events
@@ -139,7 +145,16 @@ angular.module('placemapApp')
 		    	$scope.mapLoaded=true;
 		    	ngProgress.complete(); 
 		    });
-    		
+
+			//Wait till make is loaded
+    		uiGmapIsReady.promise(1).then(function(instances) {
+		     	//console.log(instances);
+		        instances.forEach(function(inst) {
+		            var map = inst.map;
+		          	GMap.showClustering(map, $scope.map.markersControl.getGMarkers());
+		            //console.log(map);
+		        });
+		    });
 
 		}    	
 
@@ -147,6 +162,7 @@ angular.module('placemapApp')
 		$scope.$on('$viewContentLoaded', function () {
 			map_resize2();
 	    });
+
 
 
     

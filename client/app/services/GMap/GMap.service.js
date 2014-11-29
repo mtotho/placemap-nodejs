@@ -170,8 +170,8 @@ angular.module('placemapApp')
 		}
 
 
-		this.showClustering = function(){
-			var mc = new MarkerClusterer(this.map, this.mapmarkers, {
+		this.showClustering = function(map, markers){
+			var mc = new MarkerClusterer(map, markers, {
 		  		  maxZoom: 19,
 		          gridSize: 20,
 		          styles: this.styles[0]

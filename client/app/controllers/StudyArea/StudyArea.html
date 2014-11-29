@@ -17,7 +17,7 @@
 	<!--	<div id="ui_handle"></div>-->
 
 		<!--<div id="map_canvas" class="map_div" ></div>-->
-		<ui-gmap-google-map center='map.center' id="map_canvas" zoom='map.zoom' events='map_events.map'>
+		<ui-gmap-google-map center='map.center' id="map_canvas" zoom='map.zoom' events='map_events.map' control='map.control'>
 		
 			 <ui-gmap-marker coords="draggable.coords" options="draggable.options" events="draggable.events" idkey="draggable.id"></ui-gmap-marker>
 			<!--  <ui-gmap-markers
@@ -43,7 +43,7 @@
 	             control='{expression}'
 	            >
     		</ui-gmap-markers>-->
-    		<ui-gmap-markers models="studyarea.responseMarkers" coords="'self'" events='map_events.responseMarker' icon="'icon'">
+    		<ui-gmap-markers models="studyarea.responseMarkers" coords="'self'" control='map.markersControl' events='map_events.responseMarker' icon="'icon'">
 		</ui-gmap-google-map>
 	   	
 	
