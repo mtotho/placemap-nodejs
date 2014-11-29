@@ -25,7 +25,7 @@ angular.module('placemapApp')
             // do something...
         })
       },
-      controller:function($scope, API, StudyAreaMap){
+      controller:function($scope, API, GMap){
   		
         $scope.qindex = 0;
         $scope.curQuestion;
@@ -92,6 +92,7 @@ angular.module('placemapApp')
 
         $scope.$watch('study_area',function(study_area){
             if(!angular.isUndefined(study_area)){
+                console.log(study_area);
             	$scope.qcount=study_area.default_audit_type.questions.length;
                 if($scope.qcount>0){
                 	  setQuestion($scope.qindex);
@@ -142,8 +143,8 @@ angular.module('placemapApp')
         $scope.btnSubmit = function(){
            //var Response = $resource('api/responses');
             var r = new API.Response();
-            r.lat= $scope.marker.lat;
-            r.lng= $scope.marker.lng;
+            r.lat= $scope.marker.coords.latitude;
+            r.lng= $scope.marker.coords.longitude;
             r.icon=$scope.marker.icon;
             r.audit_type = $scope.study_area.default_audit_type._id;
             r.responses = new Array();
@@ -181,8 +182,18 @@ angular.module('placemapApp')
 
                 r.$save(function(result){
                     console.log(result);
-                    $scope.study_area.responses.push(result);
-                    StudyAreaMap.loadResponse(result);
+                 
+
+                    var m ={
+                            latitude: result.lat,
+                            longitude: result.lng,
+                            id:result._id,
+                            title:'derp',
+                            icon:GMap.icons[result.icon],
+                            responses:result.responses
+                    }
+                     $scope.study_area.responseMarkers.push(m);
+                  
                     $scope.qvopen=false;
                     $scope.responses=new Object();
                    // $scope.newQS="";

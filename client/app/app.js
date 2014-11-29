@@ -4,14 +4,17 @@ var is_state_restored = false;
 
 
 
-
+angular.isUndefinedOrNull = function(val) {
+    return angular.isUndefined(val) || val === null 
+}
 
 angular.module('placemapApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ui.router',
-  'uiGmapgoogle-maps'
+  'uiGmapgoogle-maps',
+  'ngProgress'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider,uiGmapGoogleMapApiProvider) {
     $urlRouterProvider

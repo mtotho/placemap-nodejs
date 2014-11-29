@@ -19,7 +19,7 @@
 		<!--<div id="map_canvas" class="map_div" ></div>-->
 		<ui-gmap-google-map center='map.center' id="map_canvas" zoom='map.zoom' events='map_events.map'>
 		
-			 <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id"></ui-gmap-marker>
+			 <ui-gmap-marker coords="draggable.coords" options="draggable.options" events="draggable.events" idkey="draggable.id"></ui-gmap-marker>
 			<!--  <ui-gmap-markers
 	             models='{expression}'
 	             idKey='{expression}'
@@ -43,7 +43,7 @@
 	             control='{expression}'
 	            >
     		</ui-gmap-markers>-->
-    		<ui-gmap-markers models="responseMarkers" coords="'self'" events='map_events.responseMarker' icon="'icon'">
+    		<ui-gmap-markers models="studyarea.responseMarkers" coords="'self'" events='map_events.responseMarker' icon="'icon'">
 		</ui-gmap-google-map>
 	   	
 	
@@ -55,8 +55,9 @@
 			<h3>Response</h3>
 
 			<div id="response_content">
-				<div ng-repeat="r in selectedMarker.responses">
+				<div ng-repeat="r in selectedMarker.model.responses">
 					
+			
 					
 					<div class="question_response" ng-hide="studyarea.default_audit_type.questions[$index].question.question_type!='check'">
 						<p class='question_text'>{{ studyarea.default_audit_type.questions[$index].question.question_text }}</p>
@@ -100,7 +101,7 @@
 		    			<label>
 
 		    				<img src="assets/images/marker_icon/icon_red.png" />
-		    				<input ng-change='rdoColorChange(markerType)' type="radio" name="markerType" ng-model="markerType" id="optionsRadios1" value="red">
+		    				<input type="radio" name="markerType" ng-model="markerType" id="optionsRadios1" value="red">
 		    			</label>
 
 		    			<p>Detracts from community</p>
@@ -112,7 +113,7 @@
 	    			<div class="rdoRate radio">
 		    			<label>
 		    				<img src="assets/images/marker_icon/icon_yellow.png" />
-		    				<input ng-change='rdoColorChange(markerType)' type="radio" name="markerType" ng-model="markerType" id="optionsRadios2" value="yellow">
+		    				<input type="radio" name="markerType" ng-model="markerType" id="optionsRadios2" value="yellow">
 		    			</label>
 		    			<p>Important opportunity that needs work</p>
 		    		</div>
@@ -121,7 +122,7 @@
 		    		<div class="rdoRate radio">
 		    			<label>
 		    				<img src="assets/images/marker_icon/icon_green.png" />
-		    				<input ng-change='rdoColorChange(markerType)' type="radio" name="markerType" ng-model="markerType" id="optionsRadios3" value="green">
+		    				<input type="radio" name="markerType" ng-model="markerType" id="optionsRadios3" value="green">
     					</label>
     					<p>A cool place that adds value</p>
 		    		</div>
@@ -144,7 +145,7 @@
 		
 		<div id="draggableTooltip" class="map_panel" data-toggle="tooltip" title="Drag marker to desired location"></div>
 
-		<ng-questions-view sa="studyarea" qvopen="qvopen" mmarker="marker"></ng-questions-view>
+		<ng-questions-view sa="studyarea" qvopen="qvopen" mmarker="draggable"></ng-questions-view>
 	    
 	
 	<!--</div>-->

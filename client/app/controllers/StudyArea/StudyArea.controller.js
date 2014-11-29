@@ -1,41 +1,31 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('StudyareaCtrl', function ($scope, GMap,API, $timeout,$rootScope, $stateParams, StudyAreaMap, uiGmapGoogleMapApi) {
+  .controller('StudyareaCtrl', function ($scope, GMap, API, $timeout,$rootScope, $stateParams, ngProgress, uiGmapGoogleMapApi) {
 	    var sa_id = $stateParams.studyarea_id;
-	 	//var StudyArea = $resource('api/studyareas/'+sa_id);
 
-	 	var selectedMarker;
-	 	var draggableSet = false;
-	 	var initSate = true; //initState is state before draggable is set for rating
-	 	var markerZindex=0;
-	 	var selectedResponse;
+	    var markerZindex=1;
 	 	$scope.ratingModeEnabled=false;
     	$scope.qvopen = false; //initialize marker response (question view) panel to closed
-    	$scope.marker;
+    
     	$scope.selectedMarker;
     	$scope.map = new Object();
-    	$scope.responseMarkers = [];
-
+    
+    	
+    	$scope.mapLoaded = false;
+    	
 	    function init(){
+	    	ngProgress.color('green');
+    		ngProgress.start();
 
 	    	//make the rate select button disabled. This is disabled until rating is selected
 	    	$("#btnSelectMarkerLocation").addClass("disabled");
-			$("#btnConfirmLocation").addClass("disabled");
+		
 	    	
 	    	API.Studyarea.get({id:sa_id},function(result){
 	    		$scope.studyarea=result;
 	    		setUpMap(result);
-	    		//Loop over the responses and create map marker models
 	    	
-    			//StudyAreaMap.init(result);
-
-    			//StudyAreaMap.setRatingMode(false);
-			//	$scope.setRatingMode(false);
-	    		//map_resize2();
-    			//GMap.checkResize();
-	    		//initListeners();
-
 	    	});
 
 
@@ -59,21 +49,62 @@ angular.module('placemapApp')
 		
 		//set up markers, map center, events, etc
 		function setUpMap(result){
-			//Loop over the responses and create map marker models
-    		for(var i=0; i<result.responses.length; i++){
-    			var res = result.responses[i];
-    			var m ={
-	    				latitude: res.lat,
-	    				longitude: res.lng,
-	    				id:res._id,
-	    				title:'derp'
-    				}
-
-    			$scope.responseMarkers.push(m);
-    		}
-
+			console.log(result);
     		//Ensure google SDK loaded before using it
     		uiGmapGoogleMapApi.then(function(maps) {
+    			$scope.studyarea.responseMarkers = [];
+    			//Loop over the responses and create map marker models
+	    		for(var i=0; i<result.responses.length; i++){
+	    			var res = result.responses[i];
+	    			var m ={
+		    				latitude: res.lat,
+		    				longitude: res.lng,
+		    				id:res._id,
+		    				title:'derp',
+		    				icon:GMap.icons[res.icon],
+		    				iconColor:res.icon,
+		    				responses:res.responses,
+		  
+	    				}
+
+	    			$scope.studyarea.responseMarkers.push(m);
+	    		}
+
+	    		//define the draggable marker
+	    		$scope.draggable={
+	    			sa_id:result._id,
+	    			coords:{
+	    				latitude:result.lat,
+	    				longitude:result.lng
+	    			},
+	    			options:{
+	    				icon:GMap.icons.grey,
+	    				draggable:true,
+	    				visible:false,
+	    				animation:maps.Animation.BOUNCE
+	    			},
+	    			events:{
+	    				//stop the animation when moused over
+	    				mouseover:function(marker,eventName,args){
+	    					if(!this.isClicked)
+	    						this.options.animation=null;
+	    				},
+	    				mousedown:function(marker,eventName,args){
+	    					this.isClicked = true;
+	    				},
+	    				mouseup:function(){
+	    					this.isClicked = false;
+	    				},
+	    				//restart bouncing when moused out
+    					mouseout:function(marker,eventName,args){
+	    					if(!this.isClicked)
+	    						this.options.animation=maps.Animation.BOUNCE;
+	    				}
+	    			},
+	    			
+	    			id:"draggable"
+	    			
+	    		}
 
     			//Define the map object
     		 	$scope.map = { 
@@ -86,14 +117,13 @@ angular.module('placemapApp')
 
     			};
 
-
-
     			//Define all the map events
 		    	$scope.map_events={
 		    		responseMarker:{
 		    			click:function(marker){
-		    				    $rootScope.$apply(function () {
-				                    console.log(marker);
+		    				    $scope.$apply(function () {
+		    				    	console.log(marker);
+				                    $scope.selectedMarker=marker;
 	                 		 	});
 		    			}//end click
 		    		},//end responseMarker events
@@ -101,153 +131,130 @@ angular.module('placemapApp')
 		    		map:{
 		    			idle:function(map){
 		    				//console.log(map.getCenter());
+
 		    			}
 		    		}//end map events
 		    	}//end all events
+
+		    	$scope.mapLoaded=true;
+		    	ngProgress.complete(); 
 		    });
     		
 
 		}    	
 
-		//dynamically resize map height
+		//Size map height after it loads
 		$scope.$on('$viewContentLoaded', function () {
 			map_resize2();
-	       
 	    });
 
 
-    	$rootScope.$on("response_click", function(){
-    		
-    		var selected = StudyAreaMap.getSelectedResponse();
-    	
-
-   			$scope.ratingModeEnabled=StudyAreaMap.getRatingMode();
-		   //	
-	  
-	      	$scope.$apply(function(){
-	      		$scope.selectedMarker=selected;
-	      		$scope.responseShown=true;
-	      	});		
-	       	$(".response_panel").collapse("show");
-
-		   		//apply dbmarker data to the scope
-	   	  	//applyResponsePanel(dbmarker);
-
-	   	  	
-	   	  	if(window.debug)console.log("===Marker Clicked===");
-	   	  	if(window.debug)console.log(selected);
-		    if(window.debug)console.log(" ");
-
-			      	
-
-		//}
-    	});
-	    
     
-
+    	//the rating mode 
 	    $scope.setRatingMode = function(bool){
 	    	$scope.ratingModeEnabled=bool;
-	    	StudyAreaMap.setRatingMode(bool);
+	    	//StudyAreaMap.setRatingMode(bool);
 
-			
-			if(bool){
-			
-				hideResponse();
+	    	//hide any open responses and set the draggable marker
+			if(bool && $scope.mapLoaded){
 
-			}else{
-				cancelMarkerLock();
-				
+				$scope.draggable.options.icon=GMap.icons["grey"];
+
+				//set the coords of the draggable to the center of the map
+				$scope.draggable.coords = angular.copy($scope.map.center);
+				$scope.draggable.options.visible=true;
+					
+				//Hide any open responses
+				$scope.selectedMarker=null;
+
+			//hide draggable marker, cancel rating select
+			}else if(!bool && $scope.mapLoaded){
+				$scope.markerType=null;
+				$scope.draggable.options.visible=false;
 			}
 	    	//setRatingMode(bool);
 	    }
-	    $scope.rdoColorChange = function(markerType){
 
-			if(markerType!="undefined"){
-			
-				GMap.setDraggableIcon("light-"+$scope.markerType);
+	    //Watch $scope.selectedMarker
+	    $scope.$watch('selectedMarker', function(marker, oldmarker){
+	    	
+	    	//revert old marker icon back to default
+	    	if(!angular.isUndefinedOrNull(oldmarker)){
+	    		oldmarker.model.icon=GMap.icons[oldmarker.model.iconColor];
+	    	}
 
-				//Replace the draggable marker on the map (it seems to disapear from the map when you change icon)
-				GMap.getDraggableMarker().setMap(GMap.getMap());
+	    	//If a new marker is selected
+	    	if(!angular.isUndefinedOrNull(marker)){
+	    		markerZindex++;
 
-				//set the animation to bounce to the user can see where it is placed.
-				GMap.getDraggableMarker().setAnimation(google.maps.Animation.BOUNCE);
-			//	gmap.getDraggableMarker().setPosition(pos);
+	    		//disable the rating mode so the response can be viewed
+	    		$scope.setRatingMode(false);
+
+	    		//Change the marker icon to its selected state
+	    		marker.model.icon=GMap.icons[marker.model.iconColor + '-select'];
+	    		marker.setZIndex(markerZindex);
+
+	    		//show the response panels
+	    		$scope.responseShown=true;
+	    		$(".response_panel").collapse("show");
 
 
 
+	    	//New marker is null, hide response
+	    	}else{
+	    		$(".response_panel").collapse("hide");
+ 				$scope.responseShown = false;	
+	    	}
+
+	    });//end watch selectedMarker
+
+
+	    //Watch markerType change so we can update draggable and buttons
+	    $scope.$watch('markerType',function(markerType){
+	    	
+	    	//Ensure markerType is defined
+	    	if(!angular.isUndefinedOrNull(markerType)){
+
+	    		//set the draggable icon to reflect markerType
+				$scope.draggable.options.icon=GMap.icons["light-"+$scope.markerType];
+				$scope.draggable.icon=markerType;
 				$("#btnSelectMarkerLocation").removeClass("disabled");
+			}else{
+				$("#btnSelectMarkerLocation").removeClass("active");
+				$("#btnSelectMarkerLocation").addClass("disabled");
 			}
-		}
+
+	    });
+	   	
+
 		//Confirm rating/Temporation location
 		$scope.btnSetRating = function(){
+			
+			//StudyAreaMap.lockRating(true);
+			$scope.draggable.options.animation=null;
+			//indicate button is pressed
+			$("#btnSelectMarkerLocation").addClass("active");
 
-			//Don't allow button click if it's already clicked or no maarker rating is defined
-			if(!StudyAreaMap.isRatingLocked() && $scope.markerType!="undefined"){
-				//flag so we know this button is clicked
-				
-				StudyAreaMap.lockRating(true);
-
-				//indicate button is pressed
-				$("#btnSelectMarkerLocation").addClass("active");
-
-				//Hide any response panels showing 
-				$(".response_panel").collapse("hide");
-				
-				//define marker so we can post it to db should user go through with questions
-				var pos =  GMap.getDraggableMarker().getPosition();
-				$scope.marker={
-					"lat":pos.lat(),
-					"lng":pos.lng(),
-					"study_area_id":sa_id,
-					//"participant_id":$scope.participant.id,
-					"icon":$scope.markerType
-				}
-
-				//flag qvopen to true to show the questions view
-				$scope.qvopen=true;
-			}
-
-		}
-
-		//Cancel the the marker rating and location lock
-		function cancelMarkerLock(){
+			//Hide any response panels showing 
+			$(".response_panel").collapse("hide");
 		
-			StudyAreaMap.lockRating(false);
-			//setRatingMode(false);
+			//flag qvopen to true to show the questions view
+			$scope.qvopen=true;
+		
 
-		  	$scope.markerType=null;
-			
-			//remove indication button is clicked
-			$("#btnSelectMarkerLocation").removeClass("active");
-			
-			//redisable  button 
-			$("#btnSelectMarkerLocation").addClass("disabled");
-
-			//redisable confirm button
-			$("#btnConfirmLocation").addClass("disabled");
-
-			//undo location type selection
-			$scope.locationType=null;
-
-			//hide collapsible content
-			//$(".collapse").collapse('hide');
 		}
 
 		//watch 'qvopen' change to decide whether to cancemarker placement
 		$scope.$watch('qvopen', function(enabled){
 			
 			//Cancel marker placement if question view is hidden
-	        if(!enabled && StudyAreaMap.isRatingLocked()){
+	        if(!enabled && $scope.ratingModeEnabled){
 	        	//cancelMarkerLock();
 	        	$scope.setRatingMode(false);
 	        }
 	    });
 
-    	function hideResponse(){
-    		//Hide the response panel
-			$(".response_panel").collapse("hide");
- 			$scope.responseShown = false;	
-		}
+    	
 
 
   });
