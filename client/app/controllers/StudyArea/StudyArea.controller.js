@@ -180,11 +180,11 @@ angular.module('placemapApp')
 			if(bool && $scope.mapLoaded){
 
 				$scope.draggable.options.icon=GMap.icons["grey"];
-				showToolTip();
+			
 				//set the coords of the draggable to the center of the map
 				$scope.draggable.coords = angular.copy($scope.map.center);
 				$scope.draggable.options.visible=true;
-					
+				showToolTip($scope.draggable.coords);
 				//Hide any open responses
 				$scope.selectedMarker=null;
 
@@ -275,9 +275,9 @@ angular.module('placemapApp')
 	        }
 	    });
 
-    	function showToolTip(){
+    	function showToolTip(coords){
 			//if(this.rating_mode){
-				var pos = GMap.getXY($scope.draggable.coords, $scope.map.control.getGMap());
+				var pos = GMap.getXY(coords, $scope.map.control.getGMap());
 				$("#draggableTooltip").css("top", pos.y-40);
 				$("#draggableTooltip").css("left", pos.x+15);
 				$("#draggableTooltip").tooltip('show');
