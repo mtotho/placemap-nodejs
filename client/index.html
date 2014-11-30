@@ -21,6 +21,7 @@
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
     <link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
       <!-- injector:css -->
       <link rel="stylesheet" href="app/app.css">
       <link rel="stylesheet" href="app/controllers/Placemaking/Placemaking.css">
@@ -43,34 +44,36 @@
 
     <!-- Add your site or application content here -->
 
-    <div id="container" class="container-fluid">
+    <div id="container">
 
-      <header >
-      <link id="linkBasePath" href="/"/>
-        <div class="col-md-6">
+      <header >    
           <h1>Placemap</h1> 
-        </div>
+      
 
-        <div class="col-md-6 header_right">
-          <div class="nav_bar" ng-controller="NavbarCtrl">
-            <ul class="nav nav-pills pull-right">
-              <li><a ui-sref="home">About</a></li>
-              <li><a href="studyarea">Study Areas</a></li>
-              <li><a href="placemaking">Placemaking Tutorial</a></li>
-                <li ng-show="!isLoggedIn" class="lnkLogin"><a  href="login">Login</a></li>
-
-                <li ng-show="isLoggedIn"  class="lnkLogin"><a href="admin">Admin Panel</a></li>
-                <li ng-show="isLoggedIn"  class="lnkLogout"><a href="admin" ng-click="logout()">Logout</a></li>
-            </ul>
-          </div>
-          
-        </div>
+       
+     
         
         <div class="clearfix"></div>
       </header>
-          
+         
 
-      <div id="content" ui-view=""></div>
+
+         <div class="nav_bar" ng-controller="NavbarCtrl"  layout="column" layout-fill>
+          <md-tabs md-selected="selectedIndex">
+            <md-tab ng-repeat="tab in tabs | toArray| orderBy:'order' | filter:tab.visible='true'" ng-click="selectTab(tab)" ng-disabled="tab.disabled" label="{{tab.title}}">
+            
+            </md-tab>
+          </md-tabs>
+
+       
+            <div>
+                 <div id="content" ui-view=""></div>
+              </div>
+             
+
+
+
+
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -99,9 +102,14 @@
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
-    <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
-     <script src='bower_components/ngprogress/build/ngProgress.min.js'></script>
-       <script src='bower_components/angular-google-maps/dist/angular-google-maps.js'></script>
+          <script src="bower_components/angular-aria/angular-aria.js"></script>
+      <script src='bower_components/angular-animate/angular-animate.js'></script>
+      <script src='bower_components/angular-material/angular-material.js'></script>
+      <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+      <script src='bower_components/ngprogress/build/ngProgress.min.js'></script>
+      <script src='bower_components/angular-google-maps/dist/angular-google-maps.js'></script>
+      <script src='bower_components/hammerjs/hammer.js'></script>
+
     <!--
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyAHDR09KWWgVoyFCoavaoHm2cCAHX5VL2g&sensor=false&libraries=places,visualization">-->
     <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
@@ -110,9 +118,11 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/collapse.min.js"></script>
      <script src="components/markerclusterer.js"></script>
      
+    
           </script>
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
+      
           <!-- injector:js -->
           <script src="app/controllers/Placemaking/Placemaking.controller.js"></script>
           <script src="app/controllers/Placemaking/Placemaking.js"></script>
@@ -137,6 +147,7 @@
           <script src="app/directives/ngQuestionsView/ngQuestionsView.directive.js"></script>
           <script src="app/factories/API/API.service.js"></script>
           <script src="app/factories/userStorage/userStorage.service.js"></script>
+          <script src="app/routes.js"></script>
           <script src="app/services/GMap/GMap.service.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
@@ -144,5 +155,6 @@
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
+             
 </body>
 </html>

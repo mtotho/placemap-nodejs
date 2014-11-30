@@ -1,6 +1,6 @@
 'use strict';
 
-var is_state_restored = false;
+
 
 
 
@@ -14,12 +14,13 @@ angular.module('placemapApp', [
   'ngSanitize',
   'ui.router',
   'uiGmapgoogle-maps',
-  'ngProgress'
+  'ngProgress',
+  'ngMaterial'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider,uiGmapGoogleMapApiProvider) {
     $urlRouterProvider
      .otherwise('/');
-      var root_path="/";
+    
       uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyAHDR09KWWgVoyFCoavaoHm2cCAHX5VL2',
         v: '3.17',
@@ -36,10 +37,7 @@ angular.module('placemapApp', [
       
     }*/
         
-     console.log(root_path);
 
-     $provide.value("apiroot", root_path+'api/');
-    //$cookieStore.put("state_restored","false");
     //$browser.baseHref = function() { return "/" };
   // is_state_restored = "derp";
     $locationProvider.html5Mode(true);
@@ -75,35 +73,6 @@ angular.module('placemapApp', [
   }).run(function ($rootScope, $state, Auth, $cookieStore,userStorage) {
      // $rootScope.basePath = $("#linkBasePath").attr('href');
 
-
-    //console.log(is_state_restored);
-    $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
-        
-        
-          //State is not restored
-         if(!is_state_restored){
-             $rootScope.$broadcast('restorestate'); //let everything know we need to restore state
-             is_state_restored=true;
-          //state is already restored, save it
-          }else{
-            $rootScope.$broadcast('savestate');
-          }
-
-
-         Auth.isLoggedInAsync(function(loggedIn) {
-            if (toState.data.authenticate && !loggedIn) {
-               $state.transitionTo("login");
-               event.preventDefault();
-            }
-          });//end Auth
-         //console.log($cookieStore.get('state_restored'));
-
-
-
-
-        
-    });//end stateChangeStart
-
     window.onbeforeunload = function (event) {
       
         $rootScope.$broadcast('savestate');
@@ -116,7 +85,15 @@ $(document).ready(function(){
 
 });
 
-
+angular.module('placemapApp').filter("toArray", function(){
+    return function(obj) {
+        var result = [];
+        angular.forEach(obj, function(val, key) {
+            result.push(val);
+        });
+        return result;
+    };
+});
 function autosize(){
   var headerheight=$("header").outerHeight();
   var info_height=$("#info_area").outerHeight();

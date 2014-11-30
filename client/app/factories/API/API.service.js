@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('placemapApp')
-  .factory('API', function ($resource, apiroot) {
+  .factory('API', function ($resource) {
     // Service logic
    // console.log("derping");
   //  console.log(apiroot);

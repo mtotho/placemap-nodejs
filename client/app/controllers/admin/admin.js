@@ -8,8 +8,8 @@ angular.module('placemapApp')
     $stateProvider
       .state('admin', {
         url: '/admin',
-		templateUrl: 'app/controllers/admin/admin.html',
-	  	controller: 'AdminCtrl',
+	     	templateUrl: 'app/controllers/admin/admin.html',
+	  	  controller: 'AdminCtrl',
        data:{
           authenticate:true
        }
