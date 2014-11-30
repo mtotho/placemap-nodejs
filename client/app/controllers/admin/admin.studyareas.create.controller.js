@@ -51,7 +51,7 @@ angular.module('placemapApp')
 
 
 
-
+ 
   			API.AuditType.query(function(result){
   				$scope.question_sets=result;
   			});
@@ -84,12 +84,6 @@ angular.module('placemapApp')
 			
 		}
 
-		function applyMapZoom(zoom){
-			$scope.$apply(function(){
-					$scope.map.zoom = zoom;
-			});
-		
-		}
 
 		
 
