@@ -1,69 +1,92 @@
 'use strict';
 
 angular.module('placemapApp')
-  .controller('AdminSACreateCtrl', function ($scope, GMap, $state, $resource,userStorage) {
+  .controller('AdminSACreateCtrl', function ($scope, $state, API,userStorage,uiGmapGoogleMapApi) {
     	
-  		var StudyArea = $resource('api/studyareas');
-  		var AuditType = $resource('api/audit_types');
+  		//ar StudyArea = $resource('api/studyareas');
+  		//var AuditType = $resource('api/audit_types');
   		
   		var storage = userStorage.model.admin.studyareas.create;
  
   		function init(){
 
-  			if(storage.in_progress){
-  				GMap.preSetCenter(storage.lat, storage.lng);
-  				GMap.preSetZoom(parseInt(storage.zoom));
-  				$scope.mapzoom=storage.zoom;
-  				$scope.StudyAreaName=storage.name;
-  				$scope.chkListPublic=storage.is_public;
-  			}
+  			//Ensure google SDK loaded before using it
+    		uiGmapGoogleMapApi.then(function(maps) {
+    				//Define the map object
+			 	$scope.map = { 
+	    			center: 
+	    				{ 
+	    					latitude:  44.337689, 
+	    					longitude: -72.7561370999999 
+	    				}, 
+					zoom: 10,
+					control:{},
+					markersControl:{},
+					events:{
+						idle:function(map){
+							syncStorage();
+						},
+						zoom_changed:function(map){
+							syncStorage();
+						}
+					}
 
-  			GMap.init("map_canvas");
-  			map_resize();
-  			GMap.checkResize();
-
-	    	google.maps.event.addListener(GMap.getMap(), 'idle', function() {
-	    		syncStorage();
- 	     	});
-
-	    	//Map zoom change
-			google.maps.event.addListener(GMap.getMap(), 'zoom_changed', function() {
-			    syncStorage();
-		    	applyMapZoom(GMap.getZoom());
-
-		 	});
+				};
 
 
-  			AuditType.query(function(result){
+
+	  			if(storage.in_progress){
+	  				$scope.map.center={
+	  					latitude: storage.lat,
+	  					longitude:storage.lng
+	  				}
+	  				$scope.map.zoom=storage.zoom;
+
+	  				//$scope.mapzoom=storage.zoom;
+	  				$scope.StudyAreaName=storage.name;
+	  				$scope.chkListPublic=storage.is_public;
+	  			}
+
+    		});
+
+
+
+
+  			API.AuditType.query(function(result){
   				$scope.question_sets=result;
   			});
-
+  		
 
   		}
   		init();
 
+		//Size map height after it loads
+		$scope.$on('$viewContentLoaded', function () {
+			map_resize();
+	    });
   		function syncStorage(){
   			storage.in_progress=true;
   			storage.name=$scope.StudyAreaName;
-  			storage.lat=""+GMap.getCenter().lat();
-			storage.lng=""+GMap.getCenter().lng();
-			storage.zoom=GMap.getZoom();
+  			storage.lat=""+$scope.map.center.latitude;
+			storage.lng=""+$scope.map.center.longitude;
+			storage.zoom=$scope.map.zoom;
 			storage.is_public=$scope.chkListPublic;
+
   		}
 
   		$scope.inputUpdated = function(){
-  			console.log(storage)
+
   			syncStorage();
   		}
   		$scope.zoomChange = function(){
 			$scope.map.zoom=parseInt($scope.zoom);
 
-			console.log($scope.map);
+			
 		}
 
 		function applyMapZoom(zoom){
 			$scope.$apply(function(){
-					$scope.mapzoom = zoom;
+					$scope.map.zoom = zoom;
 			});
 		
 		}
@@ -79,11 +102,11 @@ angular.module('placemapApp')
 			var unixtime=parseInt(date.getTime()/1000);
 			var unixtime_to_date = new Date(unixtime*1000);
 			
-			var sa = new StudyArea();
+			var sa = new API.Studyarea();
 			sa.name=$scope.StudyAreaName;
-			sa.default_zoom=GMap.getZoom();
-			sa.lat=""+GMap.getCenter().lat();
-			sa.lng=""+GMap.getCenter().lng();
+			sa.default_zoom=$scope.map.zoom;
+			sa.lat=""+$scope.map.center.latitude;
+			sa.lng=""+$scope.map.center.longitude;
 			//sa.timestamp = unixtime_to_date
 			sa.is_public = $scope.chkListPublic;
 			sa.default_audit_type=$scope.selQS._id;
@@ -106,10 +129,10 @@ function map_resize(){
 	var headerheight=$("header").outerHeight();
   	var windowheight=$(window).outerHeight();
   	var view_content_margin=$(".view_content").outerHeight(true) - $(".view_content").outerHeight();
-
+  	
   	var targetheight = windowheight - (headerheight + view_content_margin);
-
-	$("#map_canvas").height(targetheight);
+  //console.log(targetheight);
+	$("#map_canvas .angular-google-map-container").height(targetheight);
 }
 
 $(window).resize(function(){

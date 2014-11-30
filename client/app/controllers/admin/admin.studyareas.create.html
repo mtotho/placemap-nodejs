@@ -3,8 +3,14 @@
 
 
 	    
-	    <!-- other directives here -->
-	<div id="map_canvas" class="map_div" ></div>
+	
+
+	<ui-gmap-google-map center='map.center' id="map_canvas" zoom='map.zoom' events='map.events' control='map.control'>
+		
+		
+	</ui-gmap-google-map>
+	   	
+	
   
     <div class="map_panel map_create">
     	
@@ -19,7 +25,7 @@
 
 			<div class="form-group">
 				<label>Zoom Level: </label>
-				<span id="mapzoom">{{ mapzoom }}</span>
+				<span id="mapzoom">{{ map.zoom }}</span>
 
 			</div>
 

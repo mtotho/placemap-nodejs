@@ -3,26 +3,6 @@
 angular.module('placemapApp')
   .service('GMap', function () {
     
-		var instance = this;
-		this.map; //the google map object
-
-		this.draggableMarker;
-
-		this.studyarea_id=0;
-		//default map options
-		this.defaultCenter = new google.maps.LatLng(44.337689, -72.75613709999999);
-		this.mapOptions=new Array();
-		this.mapOptions.center = new google.maps.LatLng(44.337689, -72.75613709999999);
-		this.mapOptions.zoom = 10;
-		this.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
-		this.mapOptions.draggable=true;
-		this.mapOptions.zoomControl=true;
-		this.mapOptions.disableDoubleClickZoom=true;
-		this.mapOptions.scaleControl=true;
-		this.mapOptions.disableDefaultUI=false;
-		//this.studyarea;
-		//this.placemarkers = new Object();
-		this.mapmarkers = new Array();
 
 		this.icons={
 				//"red": "res/images/marker_icon/icon_red.png", //"http://maps.google.com/mapfiles/ms/icons/red-dot.png",
@@ -99,55 +79,6 @@ angular.module('placemapApp')
 	  		];
 	  	
 
-		this.init = function(mapdiv){
-				
-				//The map variable
-				this.map = new google.maps.Map(document.getElementById(mapdiv), this.mapOptions);
-				//this.map.setCenter();
-				
-				this.draggableMarker = new google.maps.Marker({
-						    	map: null,
-						    	position:this.mapOptions.center,
-						    	draggable:true,
-						    	animation:google.maps.Animation.BOUNCE,
-						    	
-			    });
-
-				this.mapmarkers = new Array();
-				/*
-			     google.maps.event.addListener(this.draggableMarker, 'mouseover', function() {
-			     
-			     	instance.draggableMarker.setAnimation(null);
-	 			 });
-
-		 	     google.maps.event.addListener(this.draggableMarker, 'mouseout', function() {
-			     	
-			     	instance.draggableMarker.setAnimation(google.maps.Animation.BOUNCE);
-				 
-	 			 });
-	*/
-				
-			  //  autosize();
-			    //this.checkResize();
-		}
-
-		this.checkResize = function(){
-			google.maps.event.trigger(this.map, 'resize');
-			this.map.setCenter(this.mapOptions.center);
-		}
-
-
-		this.enableDraggable = function(bool){
-			
-
-			if(bool==true){
-				this.draggableMarker.setMap(this.map);
-				this.draggableMarker.setPosition(this.map.getCenter());
-			}else{
-				this.draggableMarker.setMap(null);
-			}
-		
-		}
 
 		this.getXY = function (coords, map) {
 		
@@ -157,18 +88,7 @@ angular.module('placemapApp')
 			var worldPoint = map.getProjection().fromLatLngToPoint(new google.maps.LatLng(coords.latitude, coords.longitude));
 			return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
 		}
-		this.setDraggableIcon = function(iconColor){
-			this.draggableMarker.setIcon(this.icons[iconColor]);
-		}
-		this.lockDraggableMarker = function(bool){
-			this.draggableMarker.setDraggable(!bool);
-
-			if(bool){
-				this.draggableMarker.setAnimation(null)
-			}else{
-				this.draggableMarker.setAnimation(google.maps.Animation.BOUNCE);
-			}
-		}
+		
 
 
 		this.showClustering = function(map, markers){
@@ -179,58 +99,10 @@ angular.module('placemapApp')
 			});
 		}
 
-
-		this.loadMarker = function(markerdata){
-
-			var marker = new google.maps.Marker({
-						    	map: this.map,
-						    	position:new google.maps.LatLng(markerdata.lat, markerdata.lng),
-						    	draggable:false,
-						    	icon:{"url":this.icons[markerdata.icon], "anchor":new google.maps.Point(12,13)},
-						    	//title:markerdata.location_type,
-						    	response_id:markerdata.response_id
-
-			    });
-			   
-		   	marker.setClickable(true);
-		   	this.mapmarkers.push(marker);
-			
-		   	return marker;
-		}
 		this.getIcons = function(){
 			return this.icons;
 		}
-		this.getMapMarkers = function(){
-			return this.mapmarkers;
-		}
-		this.getPlaceMarkers = function(){
-			return this.placemarkers;
-		}
-		this.createStudyArea =  function(){
-			this.map.setCenter(this.defaultCenter);
-		}
-		this.preSetCenter = function(lat,lng){
-			this.mapOptions.center = new google.maps.LatLng(lat, lng);
-		}
-		this.preSetZoom = function(zoom){
-			this.mapOptions.zoom = zoom
-		}
-		this.getDraggableMarker = function (){
-			return this.draggableMarker;
-		}
-		this.getMap = function(){
-			return this.map;
-		}
-
-		this.getZoom = function(){
-			return this.map.getZoom();
-		}
-
-		this.getCenter = function(){
-			return this.map.getCenter();
-		}
-
-
+	
 
 
 
