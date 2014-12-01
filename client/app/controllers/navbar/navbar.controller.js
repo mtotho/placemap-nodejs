@@ -52,12 +52,15 @@ angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $locati
 
 	 	
 			 console.log("Going to state: "+toState.name);
-          	  switch(toState.name){
+
+          	  switch(toState.name.split(".")[0]){
 				case "home":{
 					$scope.selectedIndex=0;
 					break;
 				}
-				case "SASelect":{
+				case "SASelect":{}
+				case "StudyArea":{}
+				case "StudyareaData":{
 					$scope.selectedIndex=1;
 					break;
 				}
@@ -124,20 +127,15 @@ angular.module('placemapApp').controller('NavbarCtrl', function ($scope, $locati
 
 		 //	
 
-	 	});
-
-		
-
-		 	
-		
+	 	});	
 
 
-			});
+	});
 		$scope.logout = function(){
 			Auth.logout();
 		//	$scope.isLoggedIn=false;
 			//$state.go("home");
-			$location.path('/');
+			$location.path('/login');
 
 		}
 

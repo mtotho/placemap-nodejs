@@ -18,6 +18,7 @@ angular.module('placemapApp')
 
   		$scope.tileClick = function(sa_id){
 
+     //  $state.go("Studyarea.map", {studyarea_id: sa_id})''
   			$location.path("studyarea/" + sa_id);
 
   		}

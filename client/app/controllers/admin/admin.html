@@ -1,21 +1,26 @@
-<div id="page_admin" class="row view_content">
 
-	<div class="col-md-2">
-		
 
+  <section id="admin" layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('md')" full-height>
+   
+      <md-content class="md-padding">
+  	
 		<ul id="admin_nav" class="nav nav-pills nav-stacked">
- 			<li><a ui-sref=".studyareas">Study Areas</a></li>
-  			<li><a ui-sref=".users">Users</a></li>
-  			<li><a ui-sref=".questions">Question Sets</a></li>
+ 			<li><a ng-click="toggleLeft()" ui-sref=".studyareas">Study Areas</a></li>
+  			<li><a ng-click="toggleLeft()" ui-sref=".users">Users</a></li>
+  			<li><a ng-click="toggleLeft()" ui-sref=".questions">Question Sets</a></li>
 
  		</ul>
-
-
-	</div>
-
-
-	<div id="admin_content" class="col-md-10">
-		<div  ui-view></div>
-	</div>
-
-</div>
+      </md-content>
+    </md-sidenav>
+    
+    <md-content flex class="admin_content md-padding">
+      <div layout="column" layout-fill >
+	 		<md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md>
+            	Menu
+         	</md-button>
+      		<div  ui-view></div>
+      </div>
+    </md-content>
+  
+  </section>

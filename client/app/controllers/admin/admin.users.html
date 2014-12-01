@@ -1,39 +1,48 @@
 
-<div class="panel panel-primary">
-   	<div class="panel-heading">
-    	<h3 class="panel-title">Users</h3>
-  	</div>
+<md-content>
+    <md-list>
+      <md-item ng-repeat="u in users">
+        <md-item-content>
+          
+          <div class="md-tile-content" layout="row" layout-margin layout-fill>
+            <div flex="20">
 
-		<table id="tblUsers" class="table table-striped">
-			<tr>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Role</th>
-			</tr>
+            	<h3>{{ u.name }}</h3>
+          	  	<h4>{{ u.email }}</h4>
+          	 </div>
 
-			<tr ng-repeat="u in users"  ng-show="u.edit_mode">
+          	 <div flex="20">
+          	 
+          	 </div>
+          	 <div flex layout-align="center">
 
-				<form  role="form"  name="form2" ng-submit="saveUser(form2)">
-					<td><input type="text"  ng-model="u.name" class="form-control" type="text"  value="{{ u.name }}" /></td>
-					<td><input type="email"  ng-model="u.email" class="form-control" type="text"  value="{{ u.email }}" /></td>
-					<td>
-						<select name="roleselect" ng-model="u.role" class="form-control" ng-options="u for u in userRoles" required>
-												
-						</select>
-					</td>
+          		<p><span style="color:grey">role</span> <span style="color:green">{{ u.role }}</span></p>
+          	 </div>
+       		 <div flex>
 				
-				</form>
-			</tr>
-
-			<tr ng-repeat="u in users"  ng-show="u.edit_mode!=true">
-					<td>{{ u.name }}</td>
-					<td>{{ u.email }}</td>
-					<td>{{ u.role }}</td>
-			
-			</tr>
-		</table>
+				
+			 </div>
+          </div>
+        </md-item-content>
+        <md-divider></md-divider>
+      </md-item>
+    </md-list>
+</md-content>
+<br />
+<div layout="row">
+	<div flex="33">
+	
 	</div>
-	<button type="button" ng-click="btnNewUser()"class="btn btn-success">New User</button>
+	<div layout="column"  flex="33">
+
+	    <md-button  layout-align="center" ng-click="btnNewUser()" class="md-raised md-primary">New User</md-button>
+
+	</div> 
+	 <div flex="33">
+	
+	 </div>
+ </div>
+
 
 	<div class="modal fade" id="mdlAddUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">

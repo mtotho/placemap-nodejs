@@ -15,6 +15,7 @@ angular.module('placemapApp', [
   'ui.router',
   'uiGmapgoogle-maps',
   'ngProgress',
+  'ngAria',
   'ngMaterial'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $provide, $httpProvider,uiGmapGoogleMapApiProvider) {
@@ -94,6 +95,26 @@ angular.module('placemapApp').filter("toArray", function(){
         return result;
     };
 });
+
+angular.module('placemapApp').directive('fullHeight', function ($window) {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            var headerheight=$("header").outerHeight();
+            var navheight=$(".nav_bar").outerHeight();
+           // console.log(headerheight);
+            scope.initializeWindowSize = function () {
+
+                $(element).css('min-height', $window.innerHeight - (headerheight+navheight));
+            };
+            scope.initializeWindowSize();
+            angular.element($window).bind('resize', function () {
+                scope.initializeWindowSize();
+            });
+        }
+    };
+});
+
 function autosize(){
   var headerheight=$("header").outerHeight();
   var info_height=$("#info_area").outerHeight();

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="app/app.css">
     <link rel="stylesheet" href="bower_components/ngprogress/ngProgress.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/angular-material/themes/indigo-theme.css">
       <!-- injector:css -->
       <link rel="stylesheet" href="app/app.css">
       <link rel="stylesheet" href="app/controllers/Placemaking/Placemaking.css">
@@ -44,7 +45,9 @@
 
     <!-- Add your site or application content here -->
 
-    <div id="container">
+    
+      <div layout="column" layout-fill>
+
 
       <header >    
           <h1>Placemap</h1> 
@@ -58,23 +61,22 @@
          
 
 
-         <div class="nav_bar" ng-controller="NavbarCtrl"  layout="column" layout-fill>
-          <md-tabs md-selected="selectedIndex">
-            <md-tab ng-repeat="tab in tabs | toArray| orderBy:'order' | filter:tab.visible='true'" ng-click="selectTab(tab)" ng-disabled="tab.disabled" label="{{tab.title}}">
-            
-            </md-tab>
-          </md-tabs>
-
+         <div class="nav_bar" ng-controller="NavbarCtrl"  layout="column">
+            <md-tabs md-selected="selectedIndex">
+              <md-tab ng-repeat="tab in tabs | toArray| orderBy:'order' | filter:tab.visible='true'" ng-click="selectTab(tab)" ng-disabled="tab.disabled" label="{{tab.title}}">
+              
+              </md-tab>
+            </md-tabs>
+          </div>
        
-            <div>
-                 <div id="content" ui-view=""></div>
-              </div>
+           <div id="content" ui-view="" layout-fill></div>
+             
              
 
+      </div>
 
 
-
-    </div>
+   
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>

@@ -1,41 +1,59 @@
-<div >
-	<div class="panel panel-primary">
-	   	<div class="panel-heading">
-	    	<h3 class="panel-title">Study Areas</h3>
-	  	</div>
 
-	  	<div class="panel-body">
-	  		<label for="txtStudyFilter">Studyarea Search</label>
-			<input type="text" class="form-control" ng-model="saSearch"  /> <br />
-			<table id="tblStudyAreas" class="table table-striped">
-				<tr> 
-				
-					<th>Name</th>
-					<th>Marker Count</th>
-					<th>Question Set</th>
-					<th>Public</th>
-					<th>Link</th>
-				</tr>
+ <md-content  full-admin-height>
+    <md-list>
+      <md-item ng-repeat="sa in studyareas | filter: saSearch" ng-controller="AdminSAWatchCtrl">
+        <md-item-content>
+          <div class="md-tile-left">
+              <!--<img ng-src="{{item.face}}" class="face" alt="{{item.who}}">-->
+          </div>
+          <div class="md-tile-content" layout="row" layout-margin layout-fill>
+            <div flex="20">
 
-				<tr ng-repeat="sa in studyareas | filter: saSearch" ng-controller="AdminSAWatchCtrl">
-			
-					<td>{{ sa.name }}</td>
-					<td>{{ sa.placemarkers.length }}</td>
-					<td>
+            	<h3>{{sa.name}}</h3>
+          	  	<h4>{{sa.responses.length}} responses</h4>
+          	 </div>
+
+          	 <div flex="20">
+          	 	<select class="form-control" ng-change="audit_type_update()" ng-model="sa.default_audit_type._id"  ng-options="qs._id as qs.name for qs in question_sets">
 						
-						<select class="form-control" ng-change="audit_type_update()" ng-model="sa.default_audit_type._id"  ng-options="qs._id as qs.name for qs in question_sets">
-							
-						</select>
+				</select>
+          	 </div>
+          	 <div flex layout-align="center">
 
-					</td>
-					<td>
-						<input type="checkbox"  ng-change="radio_update()" ng-model="sa.is_public" ng-checked="sa.is_public=='1'"/>
-					</td>
-					<td><a href="{{ sa_url_part + sa.id }}">Link</a></td>
-				</tr>
-			</table>
-			</div>
-		</div>
-		<button type="button"  ui-sref="admin.sa_create" class="btn btn-success">New Study Area</button>
-		
-</div>
+          	 	<label style="font-weight:normal">
+          	 	  	<md-checkbox ng-change="radio_update()" ng-model="sa.is_public" aria-label="Checkbox 1">
+	          	 	  	<span style="color:green" ng-show="sa.is_public">Listed Publicly</span>
+	          	 		<span style="color:grey" ng-show="!sa.is_public">Private Link Only</span>
+          	 	  	</md-checkbox>
+          	 		<!--<input type="checkbox"  ng-model="sa.is_public" ng-checked="sa.is_public=='1'"/>-->
+          	 		
+          	 	</label>
+          	 </div>
+       		 <div flex>
+				
+				<a href="{{ sa_url_part + sa.id }}">Link</a>
+			 </div>
+          </div>
+        </md-item-content>
+        <md-divider></md-divider>
+      </md-item>
+    </md-list>
+    
+    
+  </md-content>
+
+
+<div class='bottom' layout="row">
+
+	<div flex="33">
+	
+	</div>
+	<div layout="column"  flex="33">
+		  
+	    <md-button ui-sref="admin.sa_create" class="btn md-raised md-primary">New Study Area</md-button>
+
+	</div> 
+	 <div flex="33">
+	
+	 </div>
+ </div>
