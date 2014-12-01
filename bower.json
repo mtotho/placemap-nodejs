@@ -14,7 +14,9 @@
     "lodash": "~2.4.1",
     "angular-ui-router": "~0.2.10",
     "angular-google-maps":"latest",
-    "ngprogress":"latest"
+    "ngprogress":"latest",
+    "angular-aria":"latest",
+    "angular-material":"latest"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
